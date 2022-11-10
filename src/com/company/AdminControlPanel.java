@@ -3,6 +3,9 @@ package com.company;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 //Implement singleton pattern here!
 public class AdminControlPanel {
@@ -57,9 +60,18 @@ public class AdminControlPanel {
         addUserButton.setBounds(650, 10, 100, 50);
         addGroupButton.setBounds(650, 70, 100, 50);
         openUserViewButton.setBounds(375, 130 , 375, 50);
+
         addUserButton.setFocusable(false);
         addGroupButton.setFocusable(false);
         openUserViewButton.setFocusable(false);
+
+        //User and Group Button methods
+        openUserViewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UserView userView = new UserView();
+            }
+        });
 
         //Analysis Buttons
         JButton showTotalUsersButton = new JButton("Show Total Users");
@@ -71,6 +83,7 @@ public class AdminControlPanel {
         showTotalGroupsButton.setBounds(570, 400, 180, 50);
         showTotalTweetsButton.setBounds(375, 460, 180, 50);
         showPercentPositiveButton.setBounds(570, 460, 180, 50);
+
         showTotalUsersButton.setFocusable(false);
         showTotalGroupsButton.setFocusable(false);
         showTotalTweetsButton.setFocusable(false);
