@@ -48,6 +48,7 @@ public class AdminControlPanel {
 
         userIdField.setBounds(375, 10, 270, 50);
         groupIdField.setBounds(375, 70, 270, 50);
+
         userIdField.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.LIGHT_GRAY));
         groupIdField.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.LIGHT_GRAY));
 
@@ -65,7 +66,7 @@ public class AdminControlPanel {
         addGroupButton.setFocusable(false);
         openUserViewButton.setFocusable(false);
 
-        //User and Group Button methods
+        //User and Group Button actionListener methods
         openUserViewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
