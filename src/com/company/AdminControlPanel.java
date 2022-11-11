@@ -30,8 +30,7 @@ public class AdminControlPanel {
         frame.setTitle("Mini Twitter");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setMinimumSize(new Dimension(960, 700));
-        frame.setVisible(true);
+        frame.setMinimumSize(new Dimension(780, 575));
 
         //JTree set up
         DefaultMutableTreeNode root = new  DefaultMutableTreeNode("Root");
@@ -101,6 +100,6 @@ public class AdminControlPanel {
         frame.add(showTotalGroupsButton);
         frame.add(showTotalTweetsButton);
         frame.add(showPercentPositiveButton);
-
+        frame.setVisible(true);
     }
 }

@@ -12,60 +12,71 @@ public class UserView {
         //Set up Java Swing GUI here
         //JFrame set up
         JFrame frame = new JFrame();
-        frame.setTitle("Mini Twitter"); //replace this title with
+        frame.setTitle("UserView"); //replace this title with
                                         //user we are viewing
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(null);
-        frame.setMinimumSize(new Dimension(500, 500));
-        frame.setVisible(true);
+        frame.setMinimumSize(new Dimension(500, 450));
 
         //JTextAreas
         JTextArea userIdFollowField = new JTextArea();
         JTextArea tweetMessageField = new JTextArea();
 
-        userIdFollowField.setBounds(10,10,250,50);
-        //tweetMessageField.setBounds(270, 10, 250, 50);
+        userIdFollowField.setBounds(10,10,300,50);
+        tweetMessageField.setBounds(10, 210, 300, 50);
+
+        userIdFollowField.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.blue));
+        tweetMessageField.setBorder(BorderFactory.createEtchedBorder(Color.orange, Color.orange));
+        tweetMessageField.setLineWrap(true);
 
         //JButtons
         JButton userIdFollowButton = new JButton("Follow User");
         JButton tweetMessageButton = new JButton("Post Tweet");
 
-        tweetMessageButton.setBounds(270, 10, 250, 50);
-
-        //add setBounds methods here for buttons
+        userIdFollowButton.setBounds(320, 10, 140, 50);
+        tweetMessageButton.setBounds(320, 210, 140, 50);
 
         //JLists
-        //List of people currently followed
+        //Current Following
         JList<String> followingList = new JList<>();
         DefaultListModel<String> followingModel = new DefaultListModel<>();
+
         followingList.setModel(followingModel);
         followingList.setLayoutOrientation(JList.VERTICAL);
         followingList.setVisibleRowCount(-1);
-        //test data for current following JList
-        followingModel.addElement("Bob");
 
-        //List of tweets from yourself and people you follows
+        followingModel.addElement("Bob"); //test data for current following JList
+
+        //News Feed
         JList<String> newsFeedList = new JList<>();
         DefaultListModel<String> newsFeedModel = new DefaultListModel<>();
+
         newsFeedList.setModel(newsFeedModel);
         newsFeedList.setLayoutOrientation(JList.VERTICAL);
         newsFeedList.setVisibleRowCount(-1);
-        //test data for news feed JList
-        newsFeedModel.addElement("First tweet");
 
-        //JScrollPanes for data in JLists
+        newsFeedModel.addElement("First tweet"); //test data for news feed JList
+
+        //JScrollPanes
+        //Current Following
         JScrollPane followingListScroller = new JScrollPane(followingList);
-        followingListScroller.setBounds(10,70, 500, 150);
+        followingListScroller.setBounds(10,70, 450, 125);
+        followingListScroller.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.blue));
 
+        //News Feed
         JScrollPane newsFeedListScroller = new JScrollPane(newsFeedList);
-        //newsFeedListScroller.setBounds();
+        newsFeedListScroller.setBounds(10, 270, 450, 125);
+        newsFeedListScroller.setBorder(BorderFactory.createEtchedBorder(Color.orange, Color.orange));
 
-        //Add components to frame
+        //Add components to JFrame
         frame.add(userIdFollowField);
         frame.add(tweetMessageField);
+
         frame.add(userIdFollowButton);
         frame.add(tweetMessageButton);
-        frame.add(followingListScroller);
 
+        frame.add(followingListScroller);
+        frame.add(newsFeedListScroller);
+        frame.setVisible(true);
     }
 }
