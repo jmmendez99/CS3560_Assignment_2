@@ -3,7 +3,7 @@ package com.company;
 public class Driver {
 
     public static void main (String[] args) {
-        //Call Admin Control Panel
+        //Reference to Admin Control Panel singleton
         AdminControlPanel admin = AdminControlPanel.getInstance();
     }
 }

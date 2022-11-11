@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 
 //Implement singleton pattern here!
-public class AdminControlPanel {
+public class AdminControlPanel implements ActionListener {
 
     //3 required things for singleton pattern:
     //private static reference
@@ -22,8 +22,14 @@ public class AdminControlPanel {
         return instance;
     }
 
+    //Making global references to buttons and text-fields and tree
+    JTree tree;
+    JTextField userIdField, groupIdField;
+    JButton addUserButton, addGroupButton , openUserViewButton ;
+    JButton showTotalUsersButton, showTotalGroupsButton, showTotalTweetsButton,  showPercentPositiveButton;
+
     //private constructor
-    private AdminControlPanel() {
+    public AdminControlPanel() {
         //Set up Java Swing GUI here
         //JFrame set up
         JFrame frame = new JFrame();
@@ -37,13 +43,13 @@ public class AdminControlPanel {
         DefaultMutableTreeNode group = new  DefaultMutableTreeNode("Group");
         root.add(group);
 
-        JTree tree = new JTree(root);
+        tree = new JTree(root);
         tree.setBounds(10,10,350,500);
         tree.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.LIGHT_GRAY));
 
         //JTextFields
-        JTextField userIdField = new JTextField(5);
-        JTextField groupIdField = new JTextField(5);
+        userIdField = new JTextField(5);
+        groupIdField = new JTextField(5);
 
         userIdField.setBounds(375, 10, 270, 50);
         groupIdField.setBounds(375, 70, 270, 50);
@@ -53,31 +59,28 @@ public class AdminControlPanel {
 
         //JButtons
         //User and Group Buttons
-        JButton addUserButton = new JButton("Add User");
-        JButton addGroupButton = new JButton("Add Group");
-        JButton openUserViewButton = new JButton("Open User View");
+        addUserButton = new JButton("Add User");
+        addGroupButton = new JButton("Add Group");
+        openUserViewButton = new JButton("Open User View");
 
         addUserButton.setBounds(650, 10, 100, 50);
         addGroupButton.setBounds(650, 70, 100, 50);
         openUserViewButton.setBounds(375, 130 , 375, 50);
 
+        addUserButton.addActionListener(this);
+        addGroupButton.addActionListener(this);
+        openUserViewButton.addActionListener(this);
+
         addUserButton.setFocusable(false);
         addGroupButton.setFocusable(false);
         openUserViewButton.setFocusable(false);
 
-        //User and Group Button actionListener methods
-        openUserViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UserView userView = new UserView();
-            }
-        });
 
         //Analysis Buttons
-        JButton showTotalUsersButton = new JButton("Show Total Users");
-        JButton showTotalGroupsButton = new JButton("Show Total Groups");
-        JButton showTotalTweetsButton = new JButton("Show Total Tweets");
-        JButton showPercentPositiveButton = new JButton("Show Positive Percent");
+        showTotalUsersButton = new JButton("Show Total Users");
+        showTotalGroupsButton = new JButton("Show Total Groups");
+        showTotalTweetsButton = new JButton("Show Total Tweets");
+        showPercentPositiveButton = new JButton("Show Positive Percent");
 
         showTotalUsersButton.setBounds(375, 400, 180, 50);
         showTotalGroupsButton.setBounds(570, 400, 180, 50);
@@ -88,6 +91,7 @@ public class AdminControlPanel {
         showTotalGroupsButton.setFocusable(false);
         showTotalTweetsButton.setFocusable(false);
         showPercentPositiveButton.setFocusable(false);
+
 
         //Add components to JFrame
         frame.add(tree);
@@ -101,5 +105,21 @@ public class AdminControlPanel {
         frame.add(showTotalTweetsButton);
         frame.add(showPercentPositiveButton);
         frame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == openUserViewButton) {
+            UserView userView = new UserView();
+        }
+        if (e.getSource() == addUserButton) {
+            User user = new User(userIdField.getText());
+            user.addToTree();
+        }
+        if (e.getSource() == addGroupButton) {
+            Group group = new Group(groupIdField.getText());
+            group.addToTree();
+        }
+
     }
 }
