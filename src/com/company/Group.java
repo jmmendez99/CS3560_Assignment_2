@@ -33,7 +33,8 @@ public class Group implements Entry {
     //Composite pattern component
     @Override
     public void addToTree() {
-        //check if instance of entry is a user, then we must add it as a child of the parent group
+        //check if instanceof entry is a user, then we must add it as a child of the parent group
+        //  else we just create a new Group() object and add it to the tree structure
         //if group exists in tree?, return it, else create group
         //set entries
         //get entries
