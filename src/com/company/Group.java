@@ -35,6 +35,8 @@ public class Group implements Entry {
     public void addToTree() {
         //check if instanceof entry is a user, then we must add it as a child of the parent group
         //  else we just create a new Group() object and add it to the tree structure
+        //need to get access to the root of the JTree from the admin panel in order to iterate through
+        //  the tree and find where we should add the child user/group
         //if group exists in tree?, return it, else create group
         //set entries
         //get entries
