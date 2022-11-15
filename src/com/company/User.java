@@ -12,7 +12,7 @@ public class User implements Entry{
     //  list of user IDs being followed by this user(followings)
     private List<String> followingIDList;
     //  list of tweets from this user
-    private List<String> newsFeed;
+    private List<String> newsFeedList;
 
     //Constructor
     //whenever a new user is instantiated, these things will be created/initialized
@@ -21,10 +21,41 @@ public class User implements Entry{
         this.userID = userID; //this should be the string the user puts in the text field
         this.followersIDList = new ArrayList<>();
         this.followingIDList = new ArrayList<>();
-        this.newsFeed = new ArrayList<>();
+        this.newsFeedList = new ArrayList<>();
     }
 
     //Getter and Setters
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public List<String> getFollowersIDList() {
+        return followersIDList;
+    }
+
+    public void setFollowersIDList(List<String> followersIDList) {
+        this.followersIDList = followersIDList;
+    }
+
+    public List<String> getFollowingIDList() {
+        return followingIDList;
+    }
+
+    public void setFollowingIDList(List<String> followingIDList) {
+        this.followingIDList = followingIDList;
+    }
+
+    public List<String> getNewsFeedList() {
+        return newsFeedList;
+    }
+
+    public void setNewsFeedList(List<String> newsFeedList) {
+        this.newsFeedList = newsFeedList;
+    }
 
     //Class methods
 
