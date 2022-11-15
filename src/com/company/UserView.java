@@ -25,16 +25,25 @@ public class UserView {
         userIdFollowField.setBounds(10,10,300,50);
         tweetMessageField.setBounds(10, 210, 300, 50);
 
-        userIdFollowField.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.blue));
-        tweetMessageField.setBorder(BorderFactory.createEtchedBorder(Color.orange, Color.orange));
+        userIdFollowField.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
+        tweetMessageField.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
         tweetMessageField.setLineWrap(true);
 
         //JButtons
         JButton userIdFollowButton = new JButton("Follow User");
-        JButton tweetMessageButton = new JButton("Post Tweet");
+        JButton postTweetButton = new JButton("Post Tweet");
 
         userIdFollowButton.setBounds(320, 10, 140, 50);
-        tweetMessageButton.setBounds(320, 210, 140, 50);
+        postTweetButton.setBounds(320, 210, 140, 50);
+
+        userIdFollowButton.setFocusable(false);
+        postTweetButton.setFocusable(false);
+
+        userIdFollowButton.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
+        postTweetButton.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
+
+        userIdFollowButton.setBackground(new Color(128,148,230));
+        postTweetButton.setBackground(Color.magenta);
 
         //JLists
         //Current Following
@@ -61,19 +70,19 @@ public class UserView {
         //Current Following
         JScrollPane followingListScroller = new JScrollPane(followingList);
         followingListScroller.setBounds(10,70, 450, 125);
-        followingListScroller.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.blue));
+        followingListScroller.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
 
         //News Feed
         JScrollPane newsFeedListScroller = new JScrollPane(newsFeedList);
         newsFeedListScroller.setBounds(10, 270, 450, 125);
-        newsFeedListScroller.setBorder(BorderFactory.createEtchedBorder(Color.orange, Color.orange));
+        newsFeedListScroller.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
 
         //Add components to JFrame
         frame.add(userIdFollowField);
         frame.add(tweetMessageField);
 
         frame.add(userIdFollowButton);
-        frame.add(tweetMessageButton);
+        frame.add(postTweetButton);
 
         frame.add(followingListScroller);
         frame.add(newsFeedListScroller);
