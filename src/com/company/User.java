@@ -1,7 +1,17 @@
 package com.company;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeModel;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class User implements Entry{
     //Properties of user
@@ -18,7 +28,7 @@ public class User implements Entry{
     //whenever a new user is instantiated, these things will be created/initialized
     //this constructor is triggered by the create user button in the admin panel
     public User(String userID) {
-        this.userID = userID; //this should be the string the user puts in the text field
+        this.userID = userID; //string that the user puts in the textField
         this.followersIDList = new ArrayList<>();
         this.followingIDList = new ArrayList<>();
         this.newsFeedList = new ArrayList<>();
@@ -65,6 +75,11 @@ public class User implements Entry{
     //Composite pattern component
     @Override
     public void addToTree() {
+        //Get reference to root node from admin control panel
+        AdminControlPanel admin = AdminControlPanel.getInstance();
+        admin.root.add((MutableTreeNode)(new User(admin.userIdField.getText())));
+
         //add user to JTree in this method
+
     }
 }
