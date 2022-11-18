@@ -1,17 +1,13 @@
 package com.company;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeModel;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Objects;
+
 
 public class User implements Entry{
     //Properties of user
@@ -27,8 +23,8 @@ public class User implements Entry{
     //Constructor
     //whenever a new user is instantiated, these things will be created/initialized
     //this constructor is triggered by the create user button in the admin panel
-    public User(String userID) {
-        this.userID = userID; //string that the user puts in the textField
+    public User() {
+        //this.userID = userID; //string that the user puts in the textField
         this.followersIDList = new ArrayList<>();
         this.followingIDList = new ArrayList<>();
         this.newsFeedList = new ArrayList<>();
@@ -69,17 +65,31 @@ public class User implements Entry{
 
     //Class methods
 
-
     //Implementation should add user to the tree structure
-    //this function is triggered by the create user button in the admin panel
     //Composite pattern component
     @Override
-    public void addToTree() {
-        //Get reference to root node from admin control panel
+    public void addToTree(ActionEvent e) {
+        //Get reference to different jTree components from admin
         AdminControlPanel admin = AdminControlPanel.getInstance();
-        admin.root.add((MutableTreeNode)(new User(admin.userIdField.getText())));
 
-        //add user to JTree in this method
+        //Need this model to get references to selected nodes in the tree
+        TreeSelectionModel selectionModel = admin.tree.getSelectionModel();
 
+        if (selectionModel.getSelectionCount() > 0) {
+            //Get selected node
+            DefaultMutableTreeNode selectedNode =
+                    (DefaultMutableTreeNode) Objects.requireNonNull(admin.tree.getSelectionPath()).getLastPathComponent();
+
+            //Get userId from TextField
+            DefaultMutableTreeNode newNode =
+                    new DefaultMutableTreeNode(admin.userIdField.getText());
+
+            //Add newNode to the selected parent node
+            selectedNode.add(newNode);
+
+            //Get reference to JTree's model and reload model with new node
+            DefaultTreeModel model = (DefaultTreeModel) admin.tree.getModel();
+            model.reload();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.company;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +33,12 @@ public class Group implements Entry {
     //this function is triggered by the create group button in the admin panel
     //Composite pattern component
     @Override
-    public void addToTree() {
+    public void addToTree(ActionEvent e) {
         //check if instanceof entry is a user, then we must add it as a child of the parent group
         //  else we just create a new Group() object and add it to the tree structure
-        //need to get access to the root of the JTree from the admin panel in order to iterate through
+
         //  the tree and find where we should add the child user/group
-        //if group exists in tree?, return it, else create group
+
         //set entries
         //get entries
         //call addToTree() method on each entry

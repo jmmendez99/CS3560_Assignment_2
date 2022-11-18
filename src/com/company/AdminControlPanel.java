@@ -1,8 +1,6 @@
 package com.company;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,68 +33,46 @@ public class AdminControlPanel implements ActionListener {
     //private constructor
     public AdminControlPanel() {
         //Set up Java Swing GUI here
-        //JFrame set up
+        /*JFrame set up*/
         JFrame frame = new JFrame();
         frame.setTitle("Mini Twitter");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setMinimumSize(new Dimension(780, 575));
 
-        //JTree
-            //Root node
+
+        /*JTree*/
+        //Root node
         root = new  DefaultMutableTreeNode("Root");
 
-            //Child nodes
-        DefaultMutableTreeNode group = new  DefaultMutableTreeNode("Group");
-        DefaultMutableTreeNode group1 = new DefaultMutableTreeNode("Group1");
-        group.add(new DefaultMutableTreeNode("user1"));
-        group.add(new DefaultMutableTreeNode("user2"));
-        group1.add(new DefaultMutableTreeNode("user3"));
-        group1.add(new DefaultMutableTreeNode("user4"));
-
-            //Add child nodes to root node
-        root.add(group);
-        root.add(group1);
-
-            //Add root node to JTree
+        //Add root node to JTree
         tree = new JTree(root);
 
-            //Get selected node in tree when we click on it
-            //this will be needed when I implement adding users/groups to a parent root
-        tree.getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                DefaultMutableTreeNode selectedNode =
-                        (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-                //Pass this object to openUserViewButton
-                Object node = selectedNode.getUserObject();
-            }
-        });
-
-            //Styling
+        //Styling
         tree.setBounds(10,10,350,500);
         tree.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.LIGHT_GRAY));
         tree.setShowsRootHandles(true);
 
 
-        //JTextFields
+        /*JTextFields*/
         userIdField = new JTextField(5);
         groupIdField = new JTextField(5);
 
-            //Styling
+        //Styling
         userIdField.setBounds(375, 10, 270, 50);
         groupIdField.setBounds(375, 70, 270, 50);
 
         userIdField.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.LIGHT_GRAY));
         groupIdField.setBorder(BorderFactory.createEtchedBorder(Color.blue, Color.LIGHT_GRAY));
 
-        //JButtons
-            //User and Group Buttons
+
+        /*JButtons*/
+        //User and Group Buttons
         addUserButton = new JButton("Add User");
         addGroupButton = new JButton("Add Group");
         openUserViewButton = new JButton("Open User View");
 
-            //Styling
+        //Styling
         addUserButton.setBounds(650, 10, 100, 50);
         addGroupButton.setBounds(650, 70, 100, 50);
         openUserViewButton.setBounds(375, 130 , 375, 50);
@@ -105,20 +81,20 @@ public class AdminControlPanel implements ActionListener {
         addGroupButton.setFocusable(false);
         openUserViewButton.setFocusable(false);
 
-            //Action listeners for user/group buttons
+        //Action listeners for user/group buttons
         addUserButton.addActionListener(this);
         addGroupButton.addActionListener(this);
         openUserViewButton.addActionListener(this);
 
 
-        //Analysis Buttons
-            //These buttons will show statistics of users/groups
+        /*Analysis Buttons*/
+        //These buttons will show statistics of users/groups
         showTotalUsersButton = new JButton("Show Total Users");
         showTotalGroupsButton = new JButton("Show Total Groups");
         showTotalTweetsButton = new JButton("Show Total Tweets");
         showPercentPositiveButton = new JButton("Show Positive Percent");
 
-            //Styling
+        //Styling
         showTotalUsersButton.setBounds(375, 400, 180, 50);
         showTotalGroupsButton.setBounds(570, 400, 180, 50);
         showTotalTweetsButton.setBounds(375, 460, 180, 50);
@@ -129,14 +105,14 @@ public class AdminControlPanel implements ActionListener {
         showTotalTweetsButton.setFocusable(false);
         showPercentPositiveButton.setFocusable(false);
 
-            //Action listeners for analysis buttons
+        //Action listeners for analysis buttons
         showTotalUsersButton.addActionListener(this);
         showTotalGroupsButton.addActionListener(this);
         showTotalTweetsButton.addActionListener(this);
         showPercentPositiveButton.addActionListener(this);
 
 
-        //Add components to JFrame
+        /*Add components to JFrame*/
         frame.add(tree);
 
         frame.add(userIdField);
@@ -160,12 +136,12 @@ public class AdminControlPanel implements ActionListener {
             UserView userView = new UserView();
         }
         if (e.getSource() == addUserButton) {
-            User user = new User("tempUser");
-            user.addToTree();
+            User user = new User();
+            user.addToTree(e);
         }
         if (e.getSource() == addGroupButton) {
             Group group = new Group(groupIdField.getText());
-            group.addToTree();
+            group.addToTree(e);
         }
 
     }
