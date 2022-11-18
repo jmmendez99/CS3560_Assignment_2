@@ -36,7 +36,9 @@ public class Group implements Entry {
     /*Class methods*/
 
 
-
+    //TODO: check if selected node is another group. If not, we cannot add the new group to that selected node
+    //TODO: there has to be a function to call on each entry in the list of entries in order to have a true composite pattern, I think
+    //      one function idea: check instanceof each entry in the list and change their JTree icon if they are a group or a user
     /*Composite pattern component*/
     //Implementation should add groups/subgroups/users to the tree structure
     @Override
@@ -62,7 +64,7 @@ public class Group implements Entry {
             DefaultMutableTreeNode selectedNode =
                     (DefaultMutableTreeNode) Objects.requireNonNull(admin.tree.getSelectionPath()).getLastPathComponent();
 
-            //Get userId from TextField
+            //Get groupId from TextField
             DefaultMutableTreeNode newNode =
                     new DefaultMutableTreeNode(admin.groupIdField.getText());
 

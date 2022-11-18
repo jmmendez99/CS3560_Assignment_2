@@ -62,6 +62,7 @@ public class User implements Entry{
     /*Class methods*/
 
 
+    //TODO: if adding users to an existing group, need to update that group's list of users.
     /*Composite pattern component*/
     //Implementation should add user to the tree structure
     @Override
