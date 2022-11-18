@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 public class User implements Entry{
-    //Properties of user
+    /*Properties of user*/
     //  unique id
     private String userID;
     //  list of user IDs that are following this user(followers)
@@ -20,17 +19,14 @@ public class User implements Entry{
     //  list of tweets from this user
     private List<String> newsFeedList;
 
-    //Constructor
-    //whenever a new user is instantiated, these things will be created/initialized
-    //this constructor is triggered by the create user button in the admin panel
+    /*Constructor*/
     public User() {
-        //this.userID = userID; //string that the user puts in the textField
         this.followersIDList = new ArrayList<>();
         this.followingIDList = new ArrayList<>();
         this.newsFeedList = new ArrayList<>();
     }
 
-    //Getter and Setters
+    /*Getter and Setters*/
     public String getUserID() {
         return userID;
     }
@@ -63,10 +59,11 @@ public class User implements Entry{
         this.newsFeedList = newsFeedList;
     }
 
-    //Class methods
+    /*Class methods*/
 
+
+    /*Composite pattern component*/
     //Implementation should add user to the tree structure
-    //Composite pattern component
     @Override
     public void addToTree(ActionEvent e) {
         //Get reference to different jTree components from admin

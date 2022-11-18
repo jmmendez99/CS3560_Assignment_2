@@ -5,24 +5,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
+import java.util.List;
 
 //Implement singleton pattern here!
 public class AdminControlPanel implements ActionListener {
+    /*Properties of admin panel*/
+    //List of users and groups
+    //Might be able to change this array into the type of <Entry>
+    private List<String> usersList = new ArrayList<>();
+    private List<String> groupsList = new ArrayList<>();
 
-    //3 required things for singleton pattern:
-    //private static reference
-    private static AdminControlPanel instance;
-
-    //static getter
-    public static AdminControlPanel getInstance() {
-        if (instance == null) {
-            instance = new AdminControlPanel();
-        }
-        return instance;
-    }
-
-    //Making public references to buttons and text-fields and tree
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JTree tree;
     public DefaultMutableTreeNode root;
@@ -30,8 +23,11 @@ public class AdminControlPanel implements ActionListener {
     public JButton addUserButton, addGroupButton , openUserViewButton ;
     public JButton showTotalUsersButton, showTotalGroupsButton, showTotalTweetsButton,  showPercentPositiveButton;
 
-    //private constructor
-    public AdminControlPanel() {
+    //private static reference
+    private static AdminControlPanel instance;
+
+    /*private constructor*/
+    private AdminControlPanel() {
         //Set up Java Swing GUI here
         /*JFrame set up*/
         JFrame frame = new JFrame();
@@ -129,6 +125,31 @@ public class AdminControlPanel implements ActionListener {
         frame.setVisible(true);
     }
 
+    //Getters and Setters
+    public List<String> getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(List<String> usersList) {
+        this.usersList = usersList;
+    }
+
+    public List<String> getGroupsList() {
+        return groupsList;
+    }
+
+    public void setGroupsList(List<String> groupsList) {
+        this.groupsList = groupsList;
+    }
+
+    //static getter
+    public static AdminControlPanel getInstance() {
+        if (instance == null) {
+            instance = new AdminControlPanel();
+        }
+        return instance;
+    }
+
     //Operations that are performed when each button is pressed
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -137,12 +158,25 @@ public class AdminControlPanel implements ActionListener {
         }
         if (e.getSource() == addUserButton) {
             User user = new User();
-            user.addToTree(e);
+
+            //Check if userID already exists
+            if (usersList.contains(userIdField.getText())) {
+               userIdField.setText("User already exists. Enter another ID.");
+            } else {
+                usersList.add(userIdField.getText());
+                user.addToTree(e);
+            }
         }
         if (e.getSource() == addGroupButton) {
-            Group group = new Group(groupIdField.getText());
-            group.addToTree(e);
-        }
+            Group group = new Group();
 
+            //Check if groupID already exists
+            if (groupsList.contains(groupIdField.getText())) {
+                groupIdField.setText("Group already exists. Enter another ID.");
+            } else {
+                groupsList.add(groupIdField.getText());
+                group.addToTree(e);
+            }
+        }
     }
 }
