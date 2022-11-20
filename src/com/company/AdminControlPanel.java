@@ -11,8 +11,9 @@ import java.util.List;
 //Implement singleton pattern here!
 public class AdminControlPanel implements ActionListener {
     /*Properties of admin panel*/
-    //List of users and groups
-    //Might be able to change this array into the type of <Entry>
+    //Dictionary of users and groups
+    //TODO: create HashTables to store user's/group's id as the key and store the user/group object as the value
+    // This way, we can access those user/group objects in other classes that need their data.
     private List<String> usersList = new ArrayList<>();
     private List<String> groupsList = new ArrayList<>();
 

@@ -119,7 +119,8 @@ public class UserView {
                     (DefaultMutableTreeNode) Objects.requireNonNull(admin.tree.getSelectionPath()).getLastPathComponent();
 
             //Get userId from selected node in JTree and set UserView's userId with that input
-            frame.setTitle(this.userId = selectedNode.getUserObject().toString());
+            this.userId = selectedNode.getUserObject().toString();
+            frame.setTitle(userId);
         }
     }
 }
