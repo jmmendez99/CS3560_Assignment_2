@@ -150,12 +150,15 @@ public class AdminControlPanel implements ActionListener {
         return instance;
     }
 
-    //Operations that are performed when each button is pressed
+    /*Operations that are performed when each button is pressed*/
     @Override
     public void actionPerformed(ActionEvent e) {
+        //Open user view
         if (e.getSource() == openUserViewButton) {
             UserView userView = new UserView();
+            userView.setUserId();
         }
+        //Add user
         if (e.getSource() == addUserButton) {
             User user = new User();
 
@@ -167,6 +170,7 @@ public class AdminControlPanel implements ActionListener {
                 user.addToTree(e);
             }
         }
+        //Add group
         if (e.getSource() == addGroupButton) {
             Group group = new Group();
 
