@@ -4,12 +4,19 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Objects;
 
-public class UserView {
+public class UserView implements ActionListener {
     /*Properties of user view*/
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JFrame frame;
+    public JButton followUserButton, postTweetButton;
+    public JTextArea userIdFollowField, tweetMessageField;
+    public JList<String> followingList, newsFeedList;
+    public DefaultListModel<String> followingModel, newsFeedModel;
+    public JScrollPane followingListScroller, newsFeedListScroller;
 
     /*Constructor*/
     public UserView(User user) {
@@ -23,8 +30,8 @@ public class UserView {
 
         /*JTextAreas*/
         //UserId and Tweet Message fields
-        JTextArea userIdFollowField = new JTextArea();
-        JTextArea tweetMessageField = new JTextArea();
+        userIdFollowField = new JTextArea();
+        tweetMessageField = new JTextArea();
 
         //Styling
         userIdFollowField.setBounds(10,10,300,50);
@@ -37,27 +44,31 @@ public class UserView {
 
         /*JButtons*/
         //Follow and Post Tweet buttons
-        JButton userIdFollowButton = new JButton("Follow User");
-        JButton postTweetButton = new JButton("Post Tweet");
+        followUserButton = new JButton("Follow User");
+        postTweetButton = new JButton("Post Tweet");
 
         //Styling
-        userIdFollowButton.setBounds(320, 10, 140, 50);
+        followUserButton.setBounds(320, 10, 140, 50);
         postTweetButton.setBounds(320, 210, 140, 50);
 
-        userIdFollowButton.setFocusable(false);
+        followUserButton.setFocusable(false);
         postTweetButton.setFocusable(false);
 
-        userIdFollowButton.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
+        followUserButton.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
         postTweetButton.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
 
-        userIdFollowButton.setBackground(new Color(128,148,230));
+        followUserButton.setBackground(new Color(128,148,230));
         postTweetButton.setBackground(Color.magenta);
+
+        //Action listeners for follow and post tweet buttons
+        followUserButton.addActionListener(this);
+        postTweetButton.addActionListener(this);
 
 
         /*JLists*/
         //Current Following JList and ListModel
-        JList<String> followingList = new JList<>();
-        DefaultListModel<String> followingModel = new DefaultListModel<>();
+        followingList = new JList<>();
+        followingModel = new DefaultListModel<>();
 
         //Add following data to model
         followingModel.addElement("Bob");
@@ -68,8 +79,8 @@ public class UserView {
         followingList.setVisibleRowCount(-1);
 
         //News Feed JList and ListModel
-        JList<String> newsFeedList = new JList<>();
-        DefaultListModel<String> newsFeedModel = new DefaultListModel<>();
+        newsFeedList = new JList<>();
+        newsFeedModel = new DefaultListModel<>();
 
         //TODO: need to put .addElement calls in the actionPerformed function for this class' buttons
         //Add news feed data to model
@@ -83,14 +94,14 @@ public class UserView {
 
         /*JScrollPanes*/
         //Current Following scroll pane
-        JScrollPane followingListScroller = new JScrollPane(followingList);
+        followingListScroller = new JScrollPane(followingList);
 
         //Styling
         followingListScroller.setBounds(10,70, 450, 125);
         followingListScroller.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
 
         //News Feed scroll pane
-        JScrollPane newsFeedListScroller = new JScrollPane(newsFeedList);
+        newsFeedListScroller = new JScrollPane(newsFeedList);
 
         //Styling
         newsFeedListScroller.setBounds(10, 270, 450, 125);
@@ -101,7 +112,7 @@ public class UserView {
         frame.add(userIdFollowField);
         frame.add(tweetMessageField);
 
-        frame.add(userIdFollowButton);
+        frame.add(followUserButton);
         frame.add(postTweetButton);
 
         frame.add(followingListScroller);
@@ -124,6 +135,18 @@ public class UserView {
 
             //Get userId from selected node in JTree and set UserView's window title to that userId
             frame.setTitle(selectedNode.getUserObject().toString());
+        }
+    }
+
+    /*Operations that are performed when each button is pressed*/
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == followUserButton) {
+            System.out.println("follow user button");
+        }
+
+        if (e.getSource() == postTweetButton) {
+            System.out.println("post tweet button");
         }
     }
 }

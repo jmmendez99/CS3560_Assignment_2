@@ -168,27 +168,27 @@ public class AdminControlPanel implements ActionListener {
         }
         //Add user
         if (e.getSource() == addUserButton) {
-            User user = new User();
-
             //Check if userID already exists
-            if (userDatabase.contains(userIdField.getText())) {
+            if (userDatabase.containsKey(userIdField.getText())) {
                userIdField.setText("User already exists. Enter another ID.");
             } else {
+                User user = new User();
                 userDatabase.put(userIdField.getText(), user);
                 user.addToTree(e);
             }
+            System.out.println(getUserDatabase().toString());
         }
         //Add group
         if (e.getSource() == addGroupButton) {
-            Group group = new Group();
-
             //Check if groupID already exists
-            if (groupDatabase.contains(groupIdField.getText())) {
+            if (groupDatabase.containsKey(groupIdField.getText())) {
                 groupIdField.setText("Group already exists. Enter another ID.");
             } else {
+                Group group = new Group();
                 groupDatabase.put(groupIdField.getText(), group);
                 group.addToTree(e);
             }
+            System.out.println(getGroupDatabase().toString());
         }
     }
 }
