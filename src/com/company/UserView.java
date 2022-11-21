@@ -71,6 +71,7 @@ public class UserView {
         JList<String> newsFeedList = new JList<>();
         DefaultListModel<String> newsFeedModel = new DefaultListModel<>();
 
+        //TODO: need to put .addElement calls in the actionPerformed function for this class' buttons
         //Add news feed data to model
         newsFeedModel.addElement("First tweet");
 

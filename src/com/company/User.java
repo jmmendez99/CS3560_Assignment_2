@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class User implements Entry{
+public class User extends Subject implements Entry , Observer {
     /*Properties of user*/
     //unique id
     private String userID;
@@ -89,5 +89,14 @@ public class User implements Entry{
             DefaultTreeModel model = (DefaultTreeModel) admin.tree.getModel();
             model.reload();
         }
+    }
+
+    //TODO: connect users and call update/set functions in UserView's actionPerformed function for its buttons
+    /*Observer pattern component*/
+    //A user is both a subject and an observer
+    @Override
+    public void update(Subject subject) {
+
+
     }
 }
