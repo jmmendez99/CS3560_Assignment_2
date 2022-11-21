@@ -31,7 +31,7 @@ public class AdminControlPanel implements ActionListener {
     /*private constructor*/
     private AdminControlPanel() {
         //Set up Java Swing GUI here
-        /*JFrame set up*/
+        /*JFrame*/
         JFrame frame = new JFrame();
         frame.setTitle("Mini Twitter");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -138,11 +138,7 @@ public class AdminControlPanel implements ActionListener {
 
     public Hashtable<String, User> getUserDatabase() { return userDatabase; }
 
-    public void setUserDatabase(Hashtable<String, User> userDatabase) { this.userDatabase = userDatabase; }
-
     public Hashtable<String, Group> getGroupDatabase() { return groupDatabase; }
-
-    public void setGroupDatabase(Hashtable<String, Group> groupDatabase) { this.groupDatabase = groupDatabase; }
 
     public User getUser() {
         //Need this model to get references to selected nodes in the tree
@@ -160,8 +156,6 @@ public class AdminControlPanel implements ActionListener {
 
         return users.get(userId);
     }
-
-
 
     /*Operations that are performed when each button is pressed*/
     @Override

@@ -22,9 +22,11 @@ public class UserView extends User {
         frame.setMinimumSize(new Dimension(500, 450));
 
         /*JTextAreas*/
+        //UserId and Tweet Message fields
         JTextArea userIdFollowField = new JTextArea();
         JTextArea tweetMessageField = new JTextArea();
 
+        //Styling
         userIdFollowField.setBounds(10,10,300,50);
         tweetMessageField.setBounds(10, 210, 300, 50);
 
@@ -33,9 +35,11 @@ public class UserView extends User {
         tweetMessageField.setLineWrap(true);
 
         /*JButtons*/
+        //Follow and Post Tweet buttons
         JButton userIdFollowButton = new JButton("Follow User");
         JButton postTweetButton = new JButton("Post Tweet");
 
+        //Styling
         userIdFollowButton.setBounds(320, 10, 140, 50);
         postTweetButton.setBounds(320, 210, 140, 50);
 
@@ -49,34 +53,42 @@ public class UserView extends User {
         postTweetButton.setBackground(Color.magenta);
 
         /*JLists*/
-        //Current Following
+        //Current Following JList and ListModel
         JList<String> followingList = new JList<>();
         DefaultListModel<String> followingModel = new DefaultListModel<>();
 
+        //Styling
         followingList.setModel(followingModel);
         followingList.setLayoutOrientation(JList.VERTICAL);
         followingList.setVisibleRowCount(-1);
 
+        //Add following data to model
         followingModel.addElement("Bob"); //test data for current following JList
 
-        //News Feed
+        //News Feed JList and ListModel
         JList<String> newsFeedList = new JList<>();
         DefaultListModel<String> newsFeedModel = new DefaultListModel<>();
 
+        //Styling
         newsFeedList.setModel(newsFeedModel);
         newsFeedList.setLayoutOrientation(JList.VERTICAL);
         newsFeedList.setVisibleRowCount(-1);
 
+        //Add news feed data to model
         newsFeedModel.addElement("First tweet"); //test data for news feed JList
 
         /*JScrollPanes*/
-        //Current Following
+        //Current Following scroll pane
         JScrollPane followingListScroller = new JScrollPane(followingList);
+
+        //Styling
         followingListScroller.setBounds(10,70, 450, 125);
         followingListScroller.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
 
-        //News Feed
+        //News Feed scroll pane
         JScrollPane newsFeedListScroller = new JScrollPane(newsFeedList);
+
+        //Styling
         newsFeedListScroller.setBounds(10, 270, 450, 125);
         newsFeedListScroller.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
 
