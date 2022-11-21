@@ -2,10 +2,12 @@ package com.company;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
+import java.util.Objects;
 
 //Implement singleton pattern here!
 public class AdminControlPanel implements ActionListener {
@@ -126,14 +128,6 @@ public class AdminControlPanel implements ActionListener {
     }
 
     /*Getters and Setters*/
-    public Hashtable<String, User> getUserDatabase() { return userDatabase; }
-
-    public void setUserDatabase(Hashtable<String, User> userDatabase) { this.userDatabase = userDatabase; }
-
-    public Hashtable<String, Group> getGroupDatabase() { return groupDatabase; }
-
-    public void setGroupDatabase(Hashtable<String, Group> groupDatabase) { this.groupDatabase = groupDatabase; }
-
     //static getter for private constructor
     public static AdminControlPanel getInstance() {
         if (instance == null) {
@@ -142,13 +136,40 @@ public class AdminControlPanel implements ActionListener {
         return instance;
     }
 
+    public Hashtable<String, User> getUserDatabase() { return userDatabase; }
+
+    public void setUserDatabase(Hashtable<String, User> userDatabase) { this.userDatabase = userDatabase; }
+
+    public Hashtable<String, Group> getGroupDatabase() { return groupDatabase; }
+
+    public void setGroupDatabase(Hashtable<String, Group> groupDatabase) { this.groupDatabase = groupDatabase; }
+
+    public User getUser() {
+        //Need this model to get references to selected nodes in the tree
+        TreeSelectionModel selectionModel = tree.getSelectionModel();
+
+        //Get selected node
+        DefaultMutableTreeNode selectedNode =
+                (DefaultMutableTreeNode) Objects.requireNonNull(tree.getSelectionPath()).getLastPathComponent();
+
+        //Get userId that is selected in the JTree
+        String userId = selectedNode.getUserObject().toString();
+
+        //Get reference to userDatabase and return User object associated with the userId selected in the JTree.
+        Hashtable<String, User> users = getUserDatabase();
+
+        return users.get(userId);
+    }
+
+
+
     /*Operations that are performed when each button is pressed*/
     @Override
     public void actionPerformed(ActionEvent e) {
         //Open user view
         if (e.getSource() == openUserViewButton) {
-            //Get user object from
-            UserView userView = new UserView();
+            //Get user object from userDatabase and pass to new UserView object
+            UserView userView = new UserView(getUser());
             userView.setWindowTitle();
         }
         //Add user

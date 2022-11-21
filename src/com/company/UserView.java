@@ -13,7 +13,7 @@ public class UserView extends User {
     public JFrame frame;
 
     /*Constructor*/
-    public UserView() {
+    public UserView(User user) {
         //Set up Java Swing GUI here
         /*JFrame*/
         frame = new JFrame();
