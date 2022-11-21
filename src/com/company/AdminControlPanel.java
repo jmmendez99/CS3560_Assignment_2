@@ -5,17 +5,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Hashtable;
 
 //Implement singleton pattern here!
 public class AdminControlPanel implements ActionListener {
-    /*Properties of admin panel*/
-    //Dictionary of users and groups
     //TODO: create HashTables to store user's/group's id as the key and store the user/group object as the value
     // This way, we can access those user/group objects in other classes that need their data.
-    private List<String> usersList = new ArrayList<>();
-    private List<String> groupsList = new ArrayList<>();
+    /*Properties of admin panel*/
+    //Database of users and groups
+    private Hashtable<String, User> userDatabase = new Hashtable<>();
+    private Hashtable<String, Group> groupDatabase = new Hashtable<>();
 
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JTree tree;
@@ -126,24 +125,16 @@ public class AdminControlPanel implements ActionListener {
         frame.setVisible(true);
     }
 
-    //Getters and Setters
-    public List<String> getUsersList() {
-        return usersList;
-    }
+    /*Getters and Setters*/
+    public Hashtable<String, User> getUserDatabase() { return userDatabase; }
 
-    public void setUsersList(List<String> usersList) {
-        this.usersList = usersList;
-    }
+    public void setUserDatabase(Hashtable<String, User> userDatabase) { this.userDatabase = userDatabase; }
 
-    public List<String> getGroupsList() {
-        return groupsList;
-    }
+    public Hashtable<String, Group> getGroupDatabase() { return groupDatabase; }
 
-    public void setGroupsList(List<String> groupsList) {
-        this.groupsList = groupsList;
-    }
+    public void setGroupDatabase(Hashtable<String, Group> groupDatabase) { this.groupDatabase = groupDatabase; }
 
-    //static getter
+    //static getter for private constructor
     public static AdminControlPanel getInstance() {
         if (instance == null) {
             instance = new AdminControlPanel();
@@ -156,18 +147,19 @@ public class AdminControlPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         //Open user view
         if (e.getSource() == openUserViewButton) {
+            //Get user object from
             UserView userView = new UserView();
-            userView.setUserId();
+            userView.setWindowTitle();
         }
         //Add user
         if (e.getSource() == addUserButton) {
             User user = new User();
 
             //Check if userID already exists
-            if (usersList.contains(userIdField.getText())) {
+            if (userDatabase.contains(userIdField.getText())) {
                userIdField.setText("User already exists. Enter another ID.");
             } else {
-                usersList.add(userIdField.getText());
+                userDatabase.put(userIdField.getText(), user);
                 user.addToTree(e);
             }
         }
@@ -176,10 +168,10 @@ public class AdminControlPanel implements ActionListener {
             Group group = new Group();
 
             //Check if groupID already exists
-            if (groupsList.contains(groupIdField.getText())) {
+            if (groupDatabase.contains(groupIdField.getText())) {
                 groupIdField.setText("Group already exists. Enter another ID.");
             } else {
-                groupsList.add(groupIdField.getText());
+                groupDatabase.put(groupIdField.getText(), group);
                 group.addToTree(e);
             }
         }

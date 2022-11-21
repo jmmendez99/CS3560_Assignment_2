@@ -6,13 +6,9 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.util.Objects;
 
-//We do not use the singleton pattern here because we want to create
-//multiple versions of this view when users want to see info on a specific user.
-public class UserView {
+//Extending the User
+public class UserView extends User {
     /*Properties of user view*/
-    private UserView instance;
-    private String userId;
-
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JFrame frame;
 
@@ -97,16 +93,7 @@ public class UserView {
     }
 
     /*Getters and Setters*/
-    public UserView getInstance() {
-        if (instance == null) {
-            instance = new UserView();
-        }
-        return instance;
-    }
-
-    public String getUserId() { return userId; }
-
-    public void setUserId() {
+    public void setWindowTitle() {
         //Get reference to different jTree components from admin
         AdminControlPanel admin = AdminControlPanel.getInstance();
 
@@ -118,9 +105,8 @@ public class UserView {
             DefaultMutableTreeNode selectedNode =
                     (DefaultMutableTreeNode) Objects.requireNonNull(admin.tree.getSelectionPath()).getLastPathComponent();
 
-            //Get userId from selected node in JTree and set UserView's userId with that input
-            this.userId = selectedNode.getUserObject().toString();
-            frame.setTitle(userId);
+            //Get userId from selected node in JTree and set UserView's window title to that userId
+            frame.setTitle(selectedNode.getUserObject().toString());
         }
     }
 }

@@ -10,13 +10,13 @@ import java.util.Objects;
 
 public class User implements Entry{
     /*Properties of user*/
-    //  unique id
+    //unique id
     private String userID;
-    //  list of user IDs that are following this user(followers)
+    //list of user IDs that are following this user(followers)
     private List<String> followersIDList;
-    //  list of user IDs being followed by this user(followings)
+    //list of user IDs being followed by this user(followings)
     private List<String> followingIDList;
-    //  list of tweets from this user
+    //list of tweets from this user
     private List<String> newsFeedList;
 
     /*Constructor*/

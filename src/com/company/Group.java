@@ -10,9 +10,9 @@ import java.util.Objects;
 
 public class Group implements Entry {
     /*Properties of group*/
-    // unique ID
+    //unique ID
     private String groupID;
-    // list of entries which consist of all users/subgroups that are part of the parent group
+    //list of entries which consist of all users/subgroups that are part of the parent group
     private List<Entry> entries;
 
     /*Constructor*/
