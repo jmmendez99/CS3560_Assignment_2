@@ -6,8 +6,7 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.util.Objects;
 
-//Extending the User
-public class UserView extends User {
+public class UserView {
     /*Properties of user view*/
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JFrame frame;
@@ -21,6 +20,7 @@ public class UserView extends User {
         frame.setLayout(null);
         frame.setMinimumSize(new Dimension(500, 450));
 
+
         /*JTextAreas*/
         //UserId and Tweet Message fields
         JTextArea userIdFollowField = new JTextArea();
@@ -33,6 +33,7 @@ public class UserView extends User {
         userIdFollowField.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
         tweetMessageField.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
         tweetMessageField.setLineWrap(true);
+
 
         /*JButtons*/
         //Follow and Post Tweet buttons
@@ -52,30 +53,32 @@ public class UserView extends User {
         userIdFollowButton.setBackground(new Color(128,148,230));
         postTweetButton.setBackground(Color.magenta);
 
+
         /*JLists*/
         //Current Following JList and ListModel
         JList<String> followingList = new JList<>();
         DefaultListModel<String> followingModel = new DefaultListModel<>();
+
+        //Add following data to model
+        followingModel.addElement("Bob");
 
         //Styling
         followingList.setModel(followingModel);
         followingList.setLayoutOrientation(JList.VERTICAL);
         followingList.setVisibleRowCount(-1);
 
-        //Add following data to model
-        followingModel.addElement("Bob"); //test data for current following JList
-
         //News Feed JList and ListModel
         JList<String> newsFeedList = new JList<>();
         DefaultListModel<String> newsFeedModel = new DefaultListModel<>();
+
+        //Add news feed data to model
+        newsFeedModel.addElement("First tweet");
 
         //Styling
         newsFeedList.setModel(newsFeedModel);
         newsFeedList.setLayoutOrientation(JList.VERTICAL);
         newsFeedList.setVisibleRowCount(-1);
 
-        //Add news feed data to model
-        newsFeedModel.addElement("First tweet"); //test data for news feed JList
 
         /*JScrollPanes*/
         //Current Following scroll pane
@@ -91,6 +94,7 @@ public class UserView extends User {
         //Styling
         newsFeedListScroller.setBounds(10, 270, 450, 125);
         newsFeedListScroller.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
+
 
         /*Add components to JFrame*/
         frame.add(userIdFollowField);
