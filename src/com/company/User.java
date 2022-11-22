@@ -93,10 +93,13 @@ public class User extends Subject implements Entry , Observer {
 
     //TODO: connect users and call update/set functions in UserView's actionPerformed function for its buttons
     /*Observer pattern component*/
-    //A user is both a subject and an observer
     @Override
     public void update(Subject subject) {
-
+        //Check if subject's type is that of a User
+        if (subject instanceof User) {
+            //TODO: update all observers with new data. Add that implementation here.
+            ((User) subject).getFollowersIDList();
+        }
 
     }
 }

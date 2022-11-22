@@ -11,8 +11,6 @@ import java.util.Objects;
 
 //Implement singleton pattern here!
 public class AdminControlPanel implements ActionListener {
-    //TODO: create HashTables to store user's/group's id as the key and store the user/group object as the value
-    // This way, we can access those user/group objects in other classes that need their data.
     /*Properties of admin panel*/
     //Database of users and groups
     private Hashtable<String, User> userDatabase = new Hashtable<>();
@@ -152,20 +150,22 @@ public class AdminControlPanel implements ActionListener {
         String userId = selectedNode.getUserObject().toString();
 
         //Get reference to userDatabase and return User object associated with the userId selected in the JTree.
-        Hashtable<String, User> users = getUserDatabase();
+        Hashtable<String, User> userDatabase = getUserDatabase();
 
-        return users.get(userId);
+        return userDatabase.get(userId);
     }
 
     /*Operations that are performed when each button is pressed*/
     @Override
     public void actionPerformed(ActionEvent e) {
+
         //Open user view
         if (e.getSource() == openUserViewButton) {
             //Get user object from userDatabase and pass to new UserView object
             UserView userView = new UserView(getUser());
-            userView.setWindowTitle();
+            userView.setUserViewUser();
         }
+
         //Add user
         if (e.getSource() == addUserButton) {
             //Check if userID already exists
@@ -178,8 +178,8 @@ public class AdminControlPanel implements ActionListener {
                 userDatabase.put(userIdField.getText(), user);
                 user.addToTree(e);
             }
-            System.out.println(getUserDatabase().toString());
         }
+
         //Add group
         if (e.getSource() == addGroupButton) {
             //Check if groupID already exists

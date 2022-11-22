@@ -6,10 +6,13 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Hashtable;
 import java.util.Objects;
 
 public class UserView implements ActionListener {
     /*Properties of user view*/
+    private String userViewUser;
+
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JFrame frame;
     public JButton followUserButton, postTweetButton;
@@ -75,8 +78,10 @@ public class UserView implements ActionListener {
             followingModel.addElement(following);
         }
 
-        //Styling
+        //Set data model to JList
         followingList.setModel(followingModel);
+
+        //Styling
         followingList.setLayoutOrientation(JList.VERTICAL);
         followingList.setVisibleRowCount(-1);
 
@@ -89,8 +94,10 @@ public class UserView implements ActionListener {
             followingModel.addElement(news);
         }
 
-        //Styling
+        //Set data model to JList
         newsFeedList.setModel(newsFeedModel);
+
+        //Styling
         newsFeedList.setLayoutOrientation(JList.VERTICAL);
         newsFeedList.setVisibleRowCount(-1);
 
@@ -124,7 +131,9 @@ public class UserView implements ActionListener {
     }
 
     /*Getters and Setters*/
-    public void setWindowTitle() {
+    public String getUserViewUser() { return userViewUser; }
+
+    public void setUserViewUser() {
         //Get reference to different jTree components from admin
         AdminControlPanel admin = AdminControlPanel.getInstance();
 
@@ -136,20 +145,59 @@ public class UserView implements ActionListener {
             DefaultMutableTreeNode selectedNode =
                     (DefaultMutableTreeNode) Objects.requireNonNull(admin.tree.getSelectionPath()).getLastPathComponent();
 
-            //Get userId from selected node in JTree and set UserView's window title to that userId
+            //Get userId from selected node in JTree and set UserView's frame title to that userId
             frame.setTitle(selectedNode.getUserObject().toString());
+
+            //Also set userViewUser's value to the string above so that we can use its value later
+            this.userViewUser = selectedNode.getUserObject().toString();
         }
     }
 
     /*Operations that are performed when each button is pressed*/
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        //Follow user
         if (e.getSource() == followUserButton) {
-            System.out.println("follow user button");
+            //Get reference to userDatabase from admin control panel
+            Hashtable<String, User> userDatabase = AdminControlPanel.getInstance().getUserDatabase();
+
+            //Check if userId is in userDatabase
+            if (!userDatabase.containsKey(userIdFollowField.getText())) {
+                userIdFollowField.setText("That user does not exist.");
+            } else {
+                //Get user we are going to follow from userDatabase
+                User targetUser = userDatabase.get(userIdFollowField.getText());
+
+                //Attach userViewUser as an observer to the targetUser
+                targetUser.attach(userDatabase.get(getUserViewUser()));
+
+                //Add current userViewUser to the targetUser's followers ID list
+                targetUser.getFollowersIDList().add(getUserViewUser());
+
+                //Add newly followed targetUser to userViewUser's list of followings
+                userDatabase.get(getUserViewUser()).getFollowingIDList().add(userIdFollowField.getText());
+
+                //In order to update the JList automatically, we must create a new DefaultListModel,
+                //populate that model with data, and then set that model onto our original JList
+                DefaultListModel<String> newFollowingModel = new DefaultListModel<>();
+                newFollowingModel.addElement(userIdFollowField.getText());
+                followingList.setModel(newFollowingModel);
+
+                //In case a userViewUser's window is closed, we must show the newly updated
+                //userViewUser's followings the next time their window is opened by setting
+                //their original JList model's value to the value of newFollowingModel.
+                followingModel = newFollowingModel;
+            }
         }
 
+        //Post tweet
+        //TODO: whenever this button is pressed, we should call the notifyObservers() function
+        //TODO: also, we should call the update() function here for all observers
+        //TODO: need to reload the UserView's DefaultListModel after the new data has been created
         if (e.getSource() == postTweetButton) {
             System.out.println("post tweet button");
+
         }
     }
 }
