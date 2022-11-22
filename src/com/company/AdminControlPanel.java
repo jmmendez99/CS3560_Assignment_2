@@ -171,6 +171,8 @@ public class AdminControlPanel implements ActionListener {
             //Check if userID already exists
             if (userDatabase.containsKey(userIdField.getText())) {
                userIdField.setText("User already exists. Enter another ID.");
+            } else if (userIdField.getText().isEmpty())  {
+                userIdField.setText("Enter a user ID.");
             } else {
                 User user = new User();
                 userDatabase.put(userIdField.getText(), user);
@@ -183,6 +185,8 @@ public class AdminControlPanel implements ActionListener {
             //Check if groupID already exists
             if (groupDatabase.containsKey(groupIdField.getText())) {
                 groupIdField.setText("Group already exists. Enter another ID.");
+            } else if (groupIdField.getText().isEmpty())  {
+                groupIdField.setText("Enter a group ID.");
             } else {
                 Group group = new Group();
                 groupDatabase.put(groupIdField.getText(), group);
