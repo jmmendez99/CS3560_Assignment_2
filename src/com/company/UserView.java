@@ -91,7 +91,7 @@ public class UserView implements ActionListener {
 
         //Add news feed data to model
         for (String news : user.getNewsFeedList()) {
-            followingModel.addElement(news);
+            newsFeedModel.addElement(news);
         }
 
         //Set data model to JList
@@ -196,8 +196,27 @@ public class UserView implements ActionListener {
         //TODO: also, we should call the update() function here for all observers
         //TODO: need to reload the UserView's DefaultListModel after the new data has been created
         if (e.getSource() == postTweetButton) {
-            System.out.println("post tweet button");
+
+            //Check if postTweetField is empty
+            if (tweetMessageField.getText().isEmpty()) {
+                tweetMessageField.setText("Enter a valid tweet.");
+            } else {
+                //Get reference to userDatabase from admin control panel
+                Hashtable<String, User> userDatabase = AdminControlPanel.getInstance().getUserDatabase();
+
+                //Get userViewUser's Users object
+                User userViewUser = userDatabase.get(getUserViewUser());
+
+                //TODO: whenever a new tweet is added to a users list, we should then call the notifyObservers()
+                // method which will call the update() method for each observer/follower of userViewUser.
+                // We should put the notifyObservers() method in a setter/add method so that whenever a user
+                // adds a tweet to their own newsFeedList, observers will receive that change and update their
+                // respective newsFeed JLists.
+
+
+            }
 
         }
+
     }
 }

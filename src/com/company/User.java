@@ -61,7 +61,6 @@ public class User extends Subject implements Entry , Observer {
 
     /*Class methods*/
 
-
     //TODO: if adding users to an existing group, need to update that group's list of users.
     /*Composite pattern component*/
     //Implementation should add user to the tree structure
@@ -91,7 +90,6 @@ public class User extends Subject implements Entry , Observer {
         }
     }
 
-    //TODO: connect users and call update/set functions in UserView's actionPerformed function for its buttons
     /*Observer pattern component*/
     @Override
     public void update(Subject subject) {
