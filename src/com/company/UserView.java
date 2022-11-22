@@ -71,7 +71,9 @@ public class UserView implements ActionListener {
         followingModel = new DefaultListModel<>();
 
         //Add following data to model
-        followingModel.addElement("Bob");
+        for (String following : user.getFollowingIDList()) {
+            followingModel.addElement(following);
+        }
 
         //Styling
         followingList.setModel(followingModel);
@@ -82,9 +84,10 @@ public class UserView implements ActionListener {
         newsFeedList = new JList<>();
         newsFeedModel = new DefaultListModel<>();
 
-        //TODO: need to put .addElement calls in the actionPerformed function for this class' buttons
         //Add news feed data to model
-        newsFeedModel.addElement("First tweet");
+        for (String news : user.getNewsFeedList()) {
+            followingModel.addElement(news);
+        }
 
         //Styling
         newsFeedList.setModel(newsFeedModel);
