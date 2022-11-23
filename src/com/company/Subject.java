@@ -19,9 +19,9 @@ public abstract class Subject {
     }
 
     //Notify observers
-    public void notifyObservers() {
+    public void notifyObservers(String tweet) {
         for (Observer observer : observers) {
-            observer.update(this);
+            observer.update(this, tweet);
         }
     }
 }

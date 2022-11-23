@@ -4,5 +4,5 @@ package com.company;
 public interface Observer {
 
     //This method will be called by observers
-    public void update(Subject subject);
+    public void update(Subject subject, String tweet);
 }

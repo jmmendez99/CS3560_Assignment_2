@@ -186,9 +186,6 @@ public class UserView implements ActionListener {
                 //Add current userViewUser to the targetUser's followers ID list
                 targetUser.getFollowersIDList().add(getUserViewUser());
 
-                //TODO: remove later
-                System.out.println(targetUser.getFollowersIDList());
-
                 //Add newly followed targetUser to userViewUser's list of followings
                 userDatabase.get(getUserViewUser()).getFollowingIDList().add(userIdFollowField.getText());
 
@@ -220,14 +217,14 @@ public class UserView implements ActionListener {
                 User userViewUser = userDatabase.get(getUserViewUser());
 
                 //Add tweet to userViewUser's news feed list
-                userViewUser.getNewsFeedList().add(tweetMessageField.getText());
-                userViewUser.setNewsFeedList(userViewUser.getNewsFeedList());
+                String tweet = userViewUser.getUserID() + ": " + tweetMessageField.getText();
+                userViewUser.getNewsFeedList().add(tweet);
+                userViewUser.setNewsFeedList(tweet);
 
                 //In order to update the JList automatically, we must create a new DefaultListModel,
                 //add new data to the original JList, initialize the new model with the old model,
                 //and then set that new model onto our original JList
                 DefaultListModel<String> newNewsFeedModel;
-                String tweet = getUserViewUser() + ": " + tweetMessageField.getText();
                 newsFeedModel.addElement(tweet); //add to original model first so that element is appended to JList
                 newNewsFeedModel = newsFeedModel;
                 newsFeedJList.setModel(newNewsFeedModel);
