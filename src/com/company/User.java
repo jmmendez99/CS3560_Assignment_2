@@ -102,7 +102,6 @@ public class User extends Subject implements Entry , Observer {
             UserView userView = UserView.getInstance();
 
             //Add tweet user observer's news feed list
-            ((User) subject).getNewsFeedList().add(tweet);
 
             //In order to update the JList automatically, we must create a new DefaultListModel,
             //add new data to the original JList, initialize the new model with the old model,

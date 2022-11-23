@@ -218,7 +218,6 @@ public class UserView implements ActionListener {
 
                 //Add tweet to userViewUser's news feed list
                 String tweet = userViewUser.getUserID() + ": " + tweetMessageField.getText();
-                userViewUser.getNewsFeedList().add(tweet);
                 userViewUser.setNewsFeedList(tweet);
 
                 //In order to update the JList automatically, we must create a new DefaultListModel,
