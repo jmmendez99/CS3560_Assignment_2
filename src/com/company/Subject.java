@@ -7,7 +7,11 @@ import java.util.List;
 public abstract class Subject {
 
     //Maintain a list of observers for each concrete subject
-    private List<Observer> observers = new ArrayList<>();
+    private List<Observer> observers = new ArrayList<Observer>();
+
+    public List<Observer> getObservers() {
+        return observers;
+    }
 
     //Attach observers
     public void attach(Observer observer) {

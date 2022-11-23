@@ -12,17 +12,17 @@ import java.util.Objects;
 public class UserView implements ActionListener {
     /*Properties of user view*/
     private String userViewUser;
+    private static UserView instance;
 
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JFrame frame;
-    public JButton followUserButton, postTweetButton;
+    public JButton followUserButton, tweetButton;
     public JTextArea userIdFollowField, tweetMessageField;
-    public JList<String> followingList, newsFeedList;
+    public JList<String> followingJList, newsFeedJList;
     public DefaultListModel<String> followingModel, newsFeedModel;
     public JScrollPane followingListScroller, newsFeedListScroller;
 
-    /*Constructor*/
-    public UserView(User user) {
+    public UserView() {
         //Set up Java Swing GUI here
         /*JFrame*/
         frame = new JFrame();
@@ -32,87 +32,91 @@ public class UserView implements ActionListener {
 
 
         /*JTextAreas*/
-        //UserId and Tweet Message fields
+        //UserId field
         userIdFollowField = new JTextArea();
-        tweetMessageField = new JTextArea();
-
         //Styling
         userIdFollowField.setBounds(10,10,300,50);
-        tweetMessageField.setBounds(10, 210, 300, 50);
-
         userIdFollowField.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
+
+        //Tweet Message field
+        tweetMessageField = new JTextArea();
+        //Styling
+        tweetMessageField.setBounds(10, 210, 300, 50);
         tweetMessageField.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
         tweetMessageField.setLineWrap(true);
 
 
         /*JButtons*/
-        //Follow and Post Tweet buttons
+        //Follow button
         followUserButton = new JButton("Follow User");
-        postTweetButton = new JButton("Post Tweet");
-
         //Styling
         followUserButton.setBounds(320, 10, 140, 50);
-        postTweetButton.setBounds(320, 210, 140, 50);
-
         followUserButton.setFocusable(false);
-        postTweetButton.setFocusable(false);
-
         followUserButton.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
-        postTweetButton.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
-
         followUserButton.setBackground(new Color(128,148,230));
-        postTweetButton.setBackground(Color.magenta);
+
+        //Post Tweet button
+        tweetButton = new JButton("Post Tweet");
+        //Styling
+        tweetButton.setBounds(320, 210, 140, 50);
+        tweetButton.setFocusable(false);
+        tweetButton.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
+        tweetButton.setBackground(Color.magenta);
 
         //Action listeners for follow and post tweet buttons
         followUserButton.addActionListener(this);
-        postTweetButton.addActionListener(this);
+        tweetButton.addActionListener(this);
 
 
         /*JLists*/
+        //Get reference to admin panel and userDatabase from admin control panel
+        AdminControlPanel admin = AdminControlPanel.getInstance();
+
         //Current Following JList and ListModel
-        followingList = new JList<>();
+        followingJList = new JList<>();
         followingModel = new DefaultListModel<>();
 
-        //Add following data to model
-        for (String following : user.getFollowingIDList()) {
+        //Add user's following data to model
+        followingModel.addElement("Users I am following:");
+        for (String following : admin.getUser().getFollowingIDList()) {
             followingModel.addElement(following);
         }
 
         //Set data model to JList
-        followingList.setModel(followingModel);
+        followingJList.setModel(followingModel);
 
         //Styling
-        followingList.setLayoutOrientation(JList.VERTICAL);
-        followingList.setVisibleRowCount(-1);
+        followingJList.setLayoutOrientation(JList.VERTICAL);
+        followingJList.setVisibleRowCount(-1);
+
 
         //News Feed JList and ListModel
-        newsFeedList = new JList<>();
+        newsFeedJList = new JList<>();
         newsFeedModel = new DefaultListModel<>();
 
-        //Add news feed data to model
-        for (String news : user.getNewsFeedList()) {
+        //Add user's news feed data to model
+        newsFeedModel.addElement("News Feed:");
+        for (String news : admin.getUser().getNewsFeedList()) {
             newsFeedModel.addElement(news);
         }
 
         //Set data model to JList
-        newsFeedList.setModel(newsFeedModel);
+        newsFeedJList.setModel(newsFeedModel);
 
         //Styling
-        newsFeedList.setLayoutOrientation(JList.VERTICAL);
-        newsFeedList.setVisibleRowCount(-1);
+        newsFeedJList.setLayoutOrientation(JList.VERTICAL);
+        newsFeedJList.setVisibleRowCount(-1);
 
 
         /*JScrollPanes*/
         //Current Following scroll pane
-        followingListScroller = new JScrollPane(followingList);
-
+        followingListScroller = new JScrollPane(followingJList);
         //Styling
         followingListScroller.setBounds(10,70, 450, 125);
         followingListScroller.setBorder(BorderFactory.createEtchedBorder(new Color(128,148,230), new Color(128,148,230)));
 
         //News Feed scroll pane
-        newsFeedListScroller = new JScrollPane(newsFeedList);
-
+        newsFeedListScroller = new JScrollPane(newsFeedJList);
         //Styling
         newsFeedListScroller.setBounds(10, 270, 450, 125);
         newsFeedListScroller.setBorder(BorderFactory.createEtchedBorder(Color.magenta, Color.magenta));
@@ -123,7 +127,7 @@ public class UserView implements ActionListener {
         frame.add(tweetMessageField);
 
         frame.add(followUserButton);
-        frame.add(postTweetButton);
+        frame.add(tweetButton);
 
         frame.add(followingListScroller);
         frame.add(newsFeedListScroller);
@@ -131,6 +135,13 @@ public class UserView implements ActionListener {
     }
 
     /*Getters and Setters*/
+    public static UserView getInstance() {
+        if (instance == null) {
+            instance = new UserView();
+        }
+        return instance;
+    }
+
     public String getUserViewUser() { return userViewUser; }
 
     public void setUserViewUser() {
@@ -175,14 +186,19 @@ public class UserView implements ActionListener {
                 //Add current userViewUser to the targetUser's followers ID list
                 targetUser.getFollowersIDList().add(getUserViewUser());
 
+                //TODO: remove later
+                System.out.println(targetUser.getFollowersIDList());
+
                 //Add newly followed targetUser to userViewUser's list of followings
                 userDatabase.get(getUserViewUser()).getFollowingIDList().add(userIdFollowField.getText());
 
                 //In order to update the JList automatically, we must create a new DefaultListModel,
-                //populate that model with data, and then set that model onto our original JList
-                DefaultListModel<String> newFollowingModel = new DefaultListModel<>();
-                newFollowingModel.addElement(userIdFollowField.getText());
-                followingList.setModel(newFollowingModel);
+                //add new data to the original JList, initialize the new model with the old model,
+                //and then set that new model onto our original JList
+                DefaultListModel<String> newFollowingModel;
+                followingModel.addElement(userIdFollowField.getText()); //add to original model first so that element is appended to JList
+                newFollowingModel = followingModel;
+                followingJList.setModel(newFollowingModel);
 
                 //In case a userViewUser's window is closed, we must show the newly updated
                 //userViewUser's followings the next time their window is opened by setting
@@ -192,11 +208,7 @@ public class UserView implements ActionListener {
         }
 
         //Post tweet
-        //TODO: whenever this button is pressed, we should call the notifyObservers() function
-        //TODO: also, we should call the update() function here for all observers
-        //TODO: need to reload the UserView's DefaultListModel after the new data has been created
-        if (e.getSource() == postTweetButton) {
-
+        if (e.getSource() == tweetButton) {
             //Check if postTweetField is empty
             if (tweetMessageField.getText().isEmpty()) {
                 tweetMessageField.setText("Enter a valid tweet.");
@@ -204,19 +216,27 @@ public class UserView implements ActionListener {
                 //Get reference to userDatabase from admin control panel
                 Hashtable<String, User> userDatabase = AdminControlPanel.getInstance().getUserDatabase();
 
-                //Get userViewUser's Users object
+                //Get reference to userViewUser from the userDatabase
                 User userViewUser = userDatabase.get(getUserViewUser());
 
-                //TODO: whenever a new tweet is added to a users list, we should then call the notifyObservers()
-                // method which will call the update() method for each observer/follower of userViewUser.
-                // We should put the notifyObservers() method in a setter/add method so that whenever a user
-                // adds a tweet to their own newsFeedList, observers will receive that change and update their
-                // respective newsFeed JLists.
+                //Add tweet to userViewUser's news feed list
+                userViewUser.getNewsFeedList().add(tweetMessageField.getText());
+                userViewUser.setNewsFeedList(userViewUser.getNewsFeedList());
 
+                //In order to update the JList automatically, we must create a new DefaultListModel,
+                //add new data to the original JList, initialize the new model with the old model,
+                //and then set that new model onto our original JList
+                DefaultListModel<String> newNewsFeedModel;
+                String tweet = getUserViewUser() + ": " + tweetMessageField.getText();
+                newsFeedModel.addElement(tweet); //add to original model first so that element is appended to JList
+                newNewsFeedModel = newsFeedModel;
+                newsFeedJList.setModel(newNewsFeedModel);
 
+                //In case a userViewUser's window is closed, we must show the newly updated
+                //userViewUser's followings the next time their window is opened by setting
+                //their original JList model's value to the value of newFollowingModel.
+                newsFeedModel = newNewsFeedModel;
             }
-
         }
-
     }
 }

@@ -1,10 +1,13 @@
 package com.company;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.event.ActionEvent;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,7 +60,9 @@ public class User extends Subject implements Entry , Observer {
 
     public void setNewsFeedList(List<String> newsFeedList) {
         this.newsFeedList = newsFeedList;
+        notifyObservers();
     }
+
 
     /*Class methods*/
 
@@ -65,7 +70,7 @@ public class User extends Subject implements Entry , Observer {
     /*Composite pattern component*/
     //Implementation should add user to the tree structure
     @Override
-    public void addToTree(ActionEvent e) {
+    public void addToTree() {
         //Get reference to different jTree components from admin
         AdminControlPanel admin = AdminControlPanel.getInstance();
 
@@ -95,9 +100,27 @@ public class User extends Subject implements Entry , Observer {
     public void update(Subject subject) {
         //Check if subject's type is that of a User
         if (subject instanceof User) {
-            //TODO: update all observers with new data. Add that implementation here.
-            ((User) subject).getFollowersIDList();
-        }
+            //Get reference to userView from UserView
+            UserView userView = UserView.getInstance();
 
+            //Add tweet user observer's news feed list
+            ((User) subject).getNewsFeedList().add(userView.tweetMessageField.getText());
+            System.out.println(((User) subject).getNewsFeedList());
+
+
+            //In order to update the JList automatically, we must create a new DefaultListModel,
+            //add new data to the original JList, initialize the new model with the old model,
+            //and then set that new model onto our original JList
+            DefaultListModel<String> newNewsFeedModel;
+            userView.newsFeedModel.addElement(userView.tweetMessageField.getText()); //add to original model first so that element is appended to JList
+            newNewsFeedModel = userView.newsFeedModel;
+            userView.newsFeedJList.setModel(newNewsFeedModel);
+
+            //In case a userViewUser's window is closed, we must show the newly updated
+            //userViewUser's followings the next time their window is opened by setting
+            //their original JList model's value to the value of newFollowingModel.
+            userView.newsFeedModel = newNewsFeedModel;
+
+        }
     }
 }

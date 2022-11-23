@@ -33,25 +33,15 @@ public class Group implements Entry {
         this.entries = entries;
     }
 
-    /*Class methods*/
-
-
     //TODO: check if selected node is another group. If not, we cannot add the new group to that selected node
     //TODO: there has to be a function to call on each entry in the list of entries in order to have a true composite pattern, I think
     //      one function idea: check instanceof each entry in the list and change their JTree icon if they are a group or a user
     /*Composite pattern component*/
     //Implementation should add groups/subgroups/users to the tree structure
     @Override
-    public void addToTree(ActionEvent e) {
+    public void addToTree() {
         //check if instanceof entry is a user, then we must add it as a child of the parent group
         //  else we just create a new Group() object and add it to the tree structure
-
-        //  the tree and find where we should add the child user/group
-
-        //set entries
-        //get entries
-        //call addToTree() method on each entry
-        //whenever a group is created
 
         //Get reference to different jTree components from admin
         AdminControlPanel admin = AdminControlPanel.getInstance();

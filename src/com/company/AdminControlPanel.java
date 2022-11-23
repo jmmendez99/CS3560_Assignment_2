@@ -12,9 +12,10 @@ import java.util.Objects;
 //Implement singleton pattern here!
 public class AdminControlPanel implements ActionListener {
     /*Properties of admin panel*/
-    //Database of users and groups
+    //Database of users and groups and userViews
     private Hashtable<String, User> userDatabase = new Hashtable<>();
     private Hashtable<String, Group> groupDatabase = new Hashtable<>();
+    private Hashtable<String, UserView> userViewDatabase = new Hashtable<>();
 
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JTree tree;
@@ -138,10 +139,21 @@ public class AdminControlPanel implements ActionListener {
 
     public Hashtable<String, Group> getGroupDatabase() { return groupDatabase; }
 
-    public User getUser() {
+    public Hashtable<String, UserView> getUserViewDatabase() { return userViewDatabase; }
+
+    public String getUserID() {
         //Need this model to get references to selected nodes in the tree
         TreeSelectionModel selectionModel = tree.getSelectionModel();
 
+        //Get selected node
+        DefaultMutableTreeNode selectedNode =
+                (DefaultMutableTreeNode) Objects.requireNonNull(tree.getSelectionPath()).getLastPathComponent();
+
+        //Get userId that is selected in the JTree and return it
+        return selectedNode.getUserObject().toString();
+    }
+
+    public User getUser() {
         //Get selected node
         DefaultMutableTreeNode selectedNode =
                 (DefaultMutableTreeNode) Objects.requireNonNull(tree.getSelectionPath()).getLastPathComponent();
@@ -161,9 +173,10 @@ public class AdminControlPanel implements ActionListener {
 
         //Open user view
         if (e.getSource() == openUserViewButton) {
-            //Get user object from userDatabase and pass to new UserView object
-            UserView userView = new UserView(getUser());
+            //Create new user view and set its user with the one that is selected in the JTree
+            UserView userView = new UserView();
             userView.setUserViewUser();
+            userViewDatabase.put(userView.getUserViewUser(), userView);
         }
 
         //Add user
@@ -175,8 +188,9 @@ public class AdminControlPanel implements ActionListener {
                 userIdField.setText("Enter a user ID.");
             } else {
                 User user = new User();
+                user.setUserID(userIdField.getText());
                 userDatabase.put(userIdField.getText(), user);
-                user.addToTree(e);
+                user.addToTree();
             }
         }
 
@@ -189,8 +203,9 @@ public class AdminControlPanel implements ActionListener {
                 groupIdField.setText("Enter a group ID.");
             } else {
                 Group group = new Group();
+                group.setGroupID(groupIdField.getText());
                 groupDatabase.put(groupIdField.getText(), group);
-                group.addToTree(e);
+                group.addToTree();
             }
             System.out.println(getGroupDatabase().toString());
         }
