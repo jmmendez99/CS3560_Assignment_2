@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class User extends Subject implements Entry , Observer {
+public class User extends Subject implements Entry , Observer, Visitable {
     /*Properties of user*/
     //unique id
     private String userID;
+
     //list of user IDs that are following this user(followers)
     private List<String> followersIDList;
     //list of user IDs being followed by this user(followings)
@@ -117,5 +118,10 @@ public class User extends Subject implements Entry , Observer {
             userView.newsFeedModel = newNewsFeedModel;
 
         }
+    }
+
+    @Override
+    public void accept(EntryVisitor visitor) {
+        visitor.visitUser(this);
     }
 }

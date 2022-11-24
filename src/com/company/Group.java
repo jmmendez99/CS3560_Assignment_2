@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Group implements Entry {
+public class Group implements Entry, Visitable {
     /*Properties of group*/
     //unique ID
     private String groupID;
@@ -64,5 +64,10 @@ public class Group implements Entry {
             DefaultTreeModel model = (DefaultTreeModel) admin.tree.getModel();
             model.reload();
         }
+    }
+
+    @Override
+    public void accept(EntryVisitor visitor) {
+        visitor.visitGroup(this);
     }
 }

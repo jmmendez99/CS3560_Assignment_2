@@ -6,8 +6,8 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Hashtable;
-import java.util.Objects;
+import java.util.*;
+import java.util.List;
 
 //Implement singleton pattern here!
 public class AdminControlPanel implements ActionListener {
@@ -16,6 +16,9 @@ public class AdminControlPanel implements ActionListener {
     private Hashtable<String, User> userDatabase = new Hashtable<>();
     private Hashtable<String, Group> groupDatabase = new Hashtable<>();
     private Hashtable<String, UserView> userViewDatabase = new Hashtable<>();
+    private final List<String> positiveWords = new ArrayList<>(Arrays.asList("happy","love","great","awesome","fun","exciting"));
+    private int userCount;
+    private int groupCount;
 
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JTree tree;
@@ -141,6 +144,14 @@ public class AdminControlPanel implements ActionListener {
 
     public Hashtable<String, UserView> getUserViewDatabase() { return userViewDatabase; }
 
+    public int getUserCount() { return userCount; }
+
+    public void setUserCount(int userCount) { this.userCount = userCount; }
+
+    public int getGroupCount() { return groupCount; }
+
+    public void setGroupCount(int groupCount) { this.groupCount = groupCount; }
+
     public String getUserID() {
         //Need this model to get references to selected nodes in the tree
         TreeSelectionModel selectionModel = tree.getSelectionModel();
@@ -191,6 +202,13 @@ public class AdminControlPanel implements ActionListener {
                 user.setUserID(userIdField.getText());
                 userDatabase.put(userIdField.getText(), user);
                 user.addToTree();
+
+                //Initialize EntryVisitor and have user call its accept() method
+                EntryVisitor countEntries = new CountEntryVisitor();
+                user.accept(countEntries);
+                int userCount = AdminControlPanel.getInstance().getUserCount();
+                userCount++;
+                AdminControlPanel.getInstance().setGroupCount(userCount);
             }
         }
 
@@ -206,8 +224,39 @@ public class AdminControlPanel implements ActionListener {
                 group.setGroupID(groupIdField.getText());
                 groupDatabase.put(groupIdField.getText(), group);
                 group.addToTree();
+
+                //Initialize EntryVisitor and have group call its accept() method
+                EntryVisitor countEntries = new CountEntryVisitor();
+                group.accept(countEntries);
+                int groupCount = AdminControlPanel.getInstance().getGroupCount();
+                groupCount++;
+                AdminControlPanel.getInstance().setGroupCount(groupCount);
             }
             System.out.println(getGroupDatabase().toString());
+        }
+
+        //Show total users
+        if (e.getSource() == showTotalUsersButton) {
+            int userCount = AdminControlPanel.getInstance().getUserCount();
+            JOptionPane.showMessageDialog(null, "Total Users: " + userCount, "User Count", JOptionPane.PLAIN_MESSAGE);
+        }
+
+        //Show total users
+        if (e.getSource() == showTotalGroupsButton) {
+            int groupCount = AdminControlPanel.getInstance().getGroupCount();
+            JOptionPane.showMessageDialog(null, "Total Users: " + groupCount, "User Count", JOptionPane.PLAIN_MESSAGE);
+        }
+
+        //Show total users
+        if (e.getSource() == showTotalTweetsButton) {
+            int totalTweets = UserView.getInstance().getTweetCount();
+            JOptionPane.showMessageDialog(null, "Total tweets: " + totalTweets, "User Count", JOptionPane.PLAIN_MESSAGE);
+        }
+
+        //Show total users
+        if (e.getSource() == showPercentPositiveButton) {
+            int positiveCount = UserView.getInstance().getPositiveCount();
+            JOptionPane.showMessageDialog(null, "Total positive messages: " + positiveCount, "User Count", JOptionPane.PLAIN_MESSAGE);
         }
     }
 }

@@ -12,6 +12,8 @@ import java.util.Objects;
 public class UserView implements ActionListener {
     /*Properties of user view*/
     private String userViewUser;
+    private int tweetCount;
+    private int positiveCount;
     private static UserView instance;
 
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
@@ -135,6 +137,22 @@ public class UserView implements ActionListener {
     }
 
     /*Getters and Setters*/
+    public int getTweetCount() {
+        return tweetCount;
+    }
+
+    public void setTweetCount(int tweetCount) {
+        this.tweetCount = tweetCount;
+    }
+
+    public int getPositiveCount() {
+        return positiveCount;
+    }
+
+    public void setPositiveCount(int positiveCount) {
+        this.positiveCount = positiveCount;
+    }
+
     public static UserView getInstance() {
         if (instance == null) {
             instance = new UserView();
@@ -232,6 +250,10 @@ public class UserView implements ActionListener {
                 //userViewUser's followings the next time their window is opened by setting
                 //their original JList model's value to the value of newFollowingModel.
                 newsFeedModel = newNewsFeedModel;
+
+                //Initialize EntryVisitor and see if the tweet is positive
+                EntryVisitor countPositive = new PositiveEntryVisitor();
+                userViewUser.accept(countPositive);
             }
         }
     }
