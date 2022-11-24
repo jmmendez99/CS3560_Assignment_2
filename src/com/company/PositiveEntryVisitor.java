@@ -5,14 +5,16 @@ public class PositiveEntryVisitor implements EntryVisitor {
 
     @Override
     public int visitUser(User user) {
-        return 0;
+        return 1;
     }
 
     @Override
     public int visitGroup(Group group) {
+        int counter = 0;
         for (Entry entry: group.getEntries()) {
             entry.accept(this);
+            counter++;
         }
-        return 0;
+        return counter;
     }
 }
