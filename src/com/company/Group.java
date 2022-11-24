@@ -55,8 +55,7 @@ public class Group implements Entry {
                     (DefaultMutableTreeNode) Objects.requireNonNull(admin.tree.getSelectionPath()).getLastPathComponent();
 
             //Get groupId from TextField
-            DefaultMutableTreeNode newNode =
-                    new DefaultMutableTreeNode(admin.groupIdField.getText());
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(admin.groupIdField.getText().toUpperCase());
 
             //Add newNode to the selected parent node
             selectedNode.add(newNode);
