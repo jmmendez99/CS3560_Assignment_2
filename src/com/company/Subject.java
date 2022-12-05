@@ -7,11 +7,7 @@ import java.util.List;
 public abstract class Subject {
 
     //Maintain a list of observers for each concrete subject
-    private List<Observer> observers = new ArrayList<Observer>();
-
-    public List<Observer> getObservers() {
-        return observers;
-    }
+    private List<Observer> observers = new ArrayList<>();
 
     //Attach observers
     public void attach(Observer observer) {
@@ -21,7 +17,7 @@ public abstract class Subject {
     //Notify observers
     public void notifyObservers(String tweet) {
         for (Observer observer : observers) {
-            observer.update(this, tweet);
+            observer.update(this, observer, tweet);
         }
     }
 }
