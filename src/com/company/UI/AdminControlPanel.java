@@ -1,4 +1,9 @@
-package com.company;
+package com.company.UI;
+
+import com.company.Models.Group;
+import com.company.Models.User;
+import com.company.Visitor.CountEntryVisitor;
+import com.company.Visitor.EntryVisitor;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;

@@ -1,4 +1,6 @@
-package com.company;
+package com.company.Visitor;
+
+import com.company.Visitor.EntryVisitor;
 
 /*Visitor pattern component*/
 //TODO: implement this interface for both the User and Group classes

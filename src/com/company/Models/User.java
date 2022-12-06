@@ -1,15 +1,20 @@
-package com.company;
+package com.company.Models;
 
-import javax.swing.*;
+import com.company.Composite.Entry;
+import com.company.Observer.Observer;
+import com.company.Observer.Subject;
+import com.company.UI.AdminControlPanel;
+import com.company.Visitor.EntryVisitor;
+import com.company.Visitor.Visitable;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Objects;
 
-public class User extends Subject implements Entry , Observer, Visitable {
+public class User extends Subject implements Entry, Observer, Visitable {
     /*Properties of user*/
     //unique id
     private String userID;

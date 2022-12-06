@@ -1,4 +1,4 @@
-package com.company;
+package com.company.Observer;
 
 //Implement observer pattern here!
 public interface Observer {
