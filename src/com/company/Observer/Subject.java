@@ -1,7 +1,5 @@
 package com.company.Observer;
 
-import com.company.Observer.Observer;
-
 import java.util.ArrayList;
 import java.util.List;
 
