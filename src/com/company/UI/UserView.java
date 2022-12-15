@@ -77,6 +77,7 @@ public class UserView implements ActionListener {
         /*JLists*/
         //Get reference to admin panel and userDatabase from admin control panel
         AdminControlPanel admin = AdminControlPanel.getInstance();
+        Hashtable<String, User> userDatabase = AdminControlPanel.getInstance().getUserDatabase();
 
         //Current Following JList and ListModel
         followingJList = new JList<>();
@@ -85,7 +86,11 @@ public class UserView implements ActionListener {
         //Add user's following data to model
         followingModel.addElement("Users I am following:");
         for (String following : admin.getUser().getFollowingIDList()) {
-            followingModel.addElement(following);
+            followingModel.addElement(
+                    following +
+                    "      |      Last updated: " +
+                    userDatabase.get(following).getLastUpdateTime()
+            );
         }
 
         //Set data model to JList
@@ -179,7 +184,16 @@ public class UserView implements ActionListener {
                     (DefaultMutableTreeNode) Objects.requireNonNull(admin.tree.getSelectionPath()).getLastPathComponent();
 
             //Get userId from selected node in JTree and set UserView's frame title to that userId
-            frame.setTitle(selectedNode.getUserObject().toString());
+            // and the time it was created and when userViewUser last had an update
+            long timeCreated = AdminControlPanel.getInstance().getUserDatabase().get(selectedNode.getUserObject().toString()).getCreationTime();
+            long lastUpdateTime = AdminControlPanel.getInstance().getUserDatabase().get(selectedNode.getUserObject().toString()).getLastUpdateTime();
+            frame.setTitle(
+                    selectedNode.getUserObject().toString() +
+                    " created @ " +
+                    timeCreated +
+                    "      |      Last updated: " +
+                    lastUpdateTime
+            );
 
             //Also set userViewUser's value to the string above so that we can use its value later
             this.userViewUser = selectedNode.getUserObject().toString();
@@ -241,6 +255,9 @@ public class UserView implements ActionListener {
                 //Add tweet to userViewUser's news feed list
                 String tweet = userViewUser.getUserID() + ": " + tweetMessageField.getText();
                 userViewUser.setNewsFeedList(tweet);
+
+                //Update userViewUser's lastUpdateTime attribute
+                userViewUser.setLastUpdateTime(System.currentTimeMillis());
 
                 //In order to update the JList automatically, we must create a new DefaultListModel,
                 //add new data to the original JList, initialize the new model with the old model,

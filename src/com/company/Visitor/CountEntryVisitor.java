@@ -20,11 +20,11 @@ public class CountEntryVisitor implements EntryVisitor {
 
     @Override
     public void visitGroup(Group group) {
-        for (Entry entry: group.getEntries()) {
-            entry.accept(this);
-            //Instead of using instanceof to check if entry is a User or Group, use the
-            //group and user databases to check if that entry's key is in their respective
-            //hashtable and if it is, then do ~~something~~~
-        }
+        //Get reference to userCount from admin control panel
+        int groupCount  = AdminControlPanel.getInstance().getGroupCount();
+
+        //Increase by 1 and then set that value in admin control panel
+        groupCount++;
+        AdminControlPanel.getInstance().setGroupCount(groupCount);
     }
 }

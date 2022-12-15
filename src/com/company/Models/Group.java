@@ -16,11 +16,14 @@ public class Group implements Entry, Visitable {
     /*Properties of group*/
     //unique ID
     private String groupID;
+    //creation time
+    private long creationTime;
     //list of entries which consist of all users/subgroups that are part of the parent group
     private List<Entry> entries;
 
     /*Constructor*/
     public Group() {
+        creationTime = System.currentTimeMillis();
         entries = new ArrayList<>();
     }
 
@@ -41,7 +44,6 @@ public class Group implements Entry, Visitable {
     //TODO: there has to be a function to call on each entry in the list of entries in order to have a true composite pattern, I think
     //      one function idea: check instanceof each entry in the list and change their JTree icon if they are a group or a user
     /*Composite pattern component*/
-    //Implementation should add groups/subgroups/users to the tree structure
     @Override
     public void addToTree() {
         //check if instanceof entry is a user, then we must add it as a child of the parent group

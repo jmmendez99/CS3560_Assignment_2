@@ -4,6 +4,8 @@ import com.company.Models.Group;
 import com.company.Models.User;
 import com.company.Visitor.CountEntryVisitor;
 import com.company.Visitor.EntryVisitor;
+import com.company.Visitor.LastUpdateEntryVisitor;
+import com.company.Visitor.ValidationEntryVisitor;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -21,9 +23,13 @@ public class AdminControlPanel implements ActionListener {
     private Hashtable<String, User> userDatabase = new Hashtable<>();
     private Hashtable<String, Group> groupDatabase = new Hashtable<>();
     private Hashtable<String, UserView> userViewDatabase = new Hashtable<>();
-    private final List<String> positiveWords = new ArrayList<>(Arrays.asList("happy","love","great","awesome","fun","exciting"));
+    private final List<String> positiveWordsDatabase = new ArrayList<>(Arrays.asList("happy","love","great","awesome","fun","exciting"));
+
+    //Properties of analysis buttons
     private int userCount;
     private int groupCount;
+    private boolean isIdValid;
+    private String lastUpdatedUser;
 
     //Might need to make these private in the future and then use getter/setter methods to access JComponents
     public JTree tree;
@@ -31,6 +37,7 @@ public class AdminControlPanel implements ActionListener {
     public JTextField userIdField, groupIdField;
     public JButton addUserButton, addGroupButton , openUserViewButton ;
     public JButton showTotalUsersButton, showTotalGroupsButton, showTotalTweetsButton,  showPercentPositiveButton;
+    public JButton validateIDButton, lastUpdatedUserButton;
 
     //private static reference
     private static AdminControlPanel instance;
@@ -117,6 +124,28 @@ public class AdminControlPanel implements ActionListener {
         showPercentPositiveButton.addActionListener(this);
 
 
+        /*ID Validation Button */
+        validateIDButton = new JButton("Validate IDs");
+
+        //Styling
+        validateIDButton.setBounds(375,340,180,50);
+
+        validateIDButton.setFocusable(false);
+
+        validateIDButton.addActionListener(this);
+
+
+        /*Last Updated User Button*/
+        lastUpdatedUserButton = new JButton("Most Recent User");
+
+        //Styling
+        lastUpdatedUserButton.setBounds(570,340,180,50);
+
+        lastUpdatedUserButton.setFocusable(false);
+
+        lastUpdatedUserButton.addActionListener(this);
+
+
         /*Add components to JFrame*/
         frame.add(tree);
 
@@ -131,6 +160,10 @@ public class AdminControlPanel implements ActionListener {
         frame.add(showTotalGroupsButton);
         frame.add(showTotalTweetsButton);
         frame.add(showPercentPositiveButton);
+
+        frame.add(validateIDButton);
+        frame.add(lastUpdatedUserButton);
+
         frame.setVisible(true);
     }
 
@@ -156,6 +189,14 @@ public class AdminControlPanel implements ActionListener {
     public int getGroupCount() { return groupCount; }
 
     public void setGroupCount(int groupCount) { this.groupCount = groupCount; }
+
+    public boolean getIsIdValid() { return isIdValid; }
+
+    public void setIsIdInvalid(boolean isIdValid) { this.isIdValid = isIdValid; }
+
+    public String getLastUpdatedUser() { return lastUpdatedUser; }
+
+    public void setLastUpdatedUser(String lastUpdatedUser) { this.lastUpdatedUser = lastUpdatedUser; }
 
     public String getUserID() {
         //Need this model to get references to selected nodes in the tree
@@ -197,8 +238,8 @@ public class AdminControlPanel implements ActionListener {
 
         //Add user
         if (e.getSource() == addUserButton) {
-            //Check if userID already exists
-            if (userDatabase.containsKey(userIdField.getText()) || userIdField.getText().isEmpty()) {
+            //Check if textField is empty
+            if (userIdField.getText().isEmpty()) {
                userIdField.setText("Enter a valid user ID.");
             } else {
                 //Create User and put them in the userDatabase and add them to the JTRee
@@ -207,35 +248,37 @@ public class AdminControlPanel implements ActionListener {
                 userDatabase.put(userIdField.getText(), user);
                 user.addToTree();
 
-                //Initialize EntryVisitor and have user call its accept() method for that visitor
+                //Initialize EntryVisitors and have user call its accept() method for those visitors
                 EntryVisitor countEntries = new CountEntryVisitor();
+                EntryVisitor validEntry = new ValidationEntryVisitor();
                 user.accept(countEntries);
+                user.accept(validEntry);
             }
-            System.out.println(userDatabase.toString());
         }
 
         //Add group
         if (e.getSource() == addGroupButton) {
-            //Check if groupID already exists
-            if (groupDatabase.containsKey(groupIdField.getText()) || groupIdField.getText().isEmpty()) {
+            //Check if textField is empty
+            if (groupIdField.getText().isEmpty()) {
                 groupIdField.setText("Enter a valid group ID.");
             } else {
                 //Create Group and put them in the groupDatabase and add them to the JTRee
                 Group group = new Group();
-                group.setGroupID(groupIdField.getText());
-                groupDatabase.put(groupIdField.getText(), group);
+                group.setGroupID(groupIdField.getText().toUpperCase());
+                groupDatabase.put(group.getGroupID(), group);
                 group.addToTree();
 
-                //Initialize EntryVisitor and have group call its accept() method for that visitor
+                //Initialize EntryVisitors and have group call its accept() method for those visitors
                 EntryVisitor countEntries = new CountEntryVisitor();
+                EntryVisitor validEntry = new ValidationEntryVisitor();
                 group.accept(countEntries);
+                group.accept(validEntry);
             }
-            System.out.println(getGroupDatabase().toString());
         }
 
         //Show total users
         if (e.getSource() == showTotalUsersButton) {
-            //Get count of users and pass to popup message
+            //Create popup dialog to show results
             int userCount = AdminControlPanel.getInstance().getUserCount();
             JOptionPane.showMessageDialog(
                     null,
@@ -246,6 +289,7 @@ public class AdminControlPanel implements ActionListener {
 
         //Show total users
         if (e.getSource() == showTotalGroupsButton) {
+            //Create popup dialog to show results
             int groupCount = AdminControlPanel.getInstance().getGroupCount();
             JOptionPane.showMessageDialog(
                     null,
@@ -256,6 +300,7 @@ public class AdminControlPanel implements ActionListener {
 
         //Show total users
         if (e.getSource() == showTotalTweetsButton) {
+            //Create popup dialog to show results
             int totalTweets = UserView.getInstance().getTweetCount();
             JOptionPane.showMessageDialog(
                     null,
@@ -266,11 +311,38 @@ public class AdminControlPanel implements ActionListener {
 
         //Show total users
         if (e.getSource() == showPercentPositiveButton) {
+            //Create popup dialog to show results
             int positiveCount = UserView.getInstance().getPositiveCount();
             JOptionPane.showMessageDialog(
                     null,
                     "Total positive messages: " + positiveCount,
                     "User Count",
+                    JOptionPane.PLAIN_MESSAGE);
+        }
+
+        //User and Group ID verification
+        if (e.getSource() == validateIDButton) {
+            //Create popup dialog to show results
+            boolean isIdValid = AdminControlPanel.getInstance().getIsIdValid();
+            JOptionPane.showMessageDialog(
+                    null,
+                    "There are invalid IDs: " + isIdValid,
+                    "ID Verification",
+                    JOptionPane.PLAIN_MESSAGE);
+        }
+
+        //Last updated user
+        if (e.getSource() == lastUpdatedUserButton) {
+            //Create EntryVisitor and have our user accept the visitor
+            EntryVisitor lastUpdate = new LastUpdateEntryVisitor();
+            AdminControlPanel.getInstance().getUser().accept(lastUpdate);
+
+            //Create popup dialog to show results
+            String lastUpdatedUser = getLastUpdatedUser();
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Last Updated User: " + lastUpdatedUser,
+                    "Latest Update",
                     JOptionPane.PLAIN_MESSAGE);
         }
     }

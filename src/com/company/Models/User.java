@@ -4,6 +4,7 @@ import com.company.Composite.Entry;
 import com.company.Observer.Observer;
 import com.company.Observer.Subject;
 import com.company.UI.AdminControlPanel;
+import com.company.UI.UserView;
 import com.company.Visitor.EntryVisitor;
 import com.company.Visitor.Visitable;
 
@@ -18,7 +19,10 @@ public class User extends Subject implements Entry, Observer, Visitable {
     /*Properties of user*/
     //unique id
     private String userID;
-
+    //creation time
+    private long creationTime;
+    //last update time
+    private long lastUpdateTime;
     //list of user IDs that are following this user(followers)
     private List<String> followersIDList;
     //list of user IDs being followed by this user(followings)
@@ -28,6 +32,7 @@ public class User extends Subject implements Entry, Observer, Visitable {
 
     /*Constructor*/
     public User() {
+        creationTime = System.currentTimeMillis();
         this.followersIDList = new ArrayList<>();
         this.followingIDList = new ArrayList<>();
         this.newsFeedList = new ArrayList<>();
@@ -41,6 +46,12 @@ public class User extends Subject implements Entry, Observer, Visitable {
     public void setUserID(String userID) {
         this.userID = userID;
     }
+
+    public long getCreationTime() { return creationTime; }
+
+    public long getLastUpdateTime() { return lastUpdateTime; }
+
+    public void setLastUpdateTime(long lastUpdateTime) { this.lastUpdateTime = lastUpdateTime; }
 
     public List<String> getFollowersIDList() {
         return followersIDList;
@@ -72,7 +83,6 @@ public class User extends Subject implements Entry, Observer, Visitable {
 
     //TODO: if adding users to an existing group, need to update that group's list of users.
     /*Composite pattern component*/
-    //Implementation should add user to the tree structure
     @Override
     public void addToTree() {
         //Get reference to different jTree components from admin
@@ -99,21 +109,19 @@ public class User extends Subject implements Entry, Observer, Visitable {
         }
     }
 
-    //TODO: this method needs to be changed in order to get the observer pattern correct.
     /*Observer pattern component*/
     @Override
     public void update(Subject subject, Observer observer, String tweet) {
         //Check if subject's type is that of a User
         if (subject instanceof User) {
-            //TODO: get observers of subject and then put them in a new list. after that, find a way to access
-            // that specific user from that list or as an individual and to get their data.
-
             //Convert observer to User type in order to use that class' methods
             User follower = (User) observer;
 
             //Add subject's tweet to observer's news feed list
             follower.getNewsFeedList().add(tweet);
 
+            //TODO: use below code to update each observers userView automatically
+            // while they are still open and by opening and closing their respective userViews
 //            //Get reference to userView from UserView
 //            UserView userView = UserView.getInstance();
 //
@@ -131,7 +139,6 @@ public class User extends Subject implements Entry, Observer, Visitable {
 //            //userViewUser's followings the next time their window is opened by setting
 //            //their original JList model's value to the value of newFollowingModel.
 //            userView.newsFeedModel = newNewsFeedModel;
-
         }
     }
 
