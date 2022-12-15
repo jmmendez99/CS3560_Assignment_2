@@ -6,6 +6,6 @@ import com.company.Models.User;
 /*Visitor pattern component*/
 public interface EntryVisitor {
 
-    public int visitUser(User user);
-    public int visitGroup(Group group);
+    void visitUser(User user);
+    void visitGroup(Group group);
 }

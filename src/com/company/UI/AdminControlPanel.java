@@ -198,70 +198,80 @@ public class AdminControlPanel implements ActionListener {
         //Add user
         if (e.getSource() == addUserButton) {
             //Check if userID already exists
-            if (userDatabase.containsKey(userIdField.getText())) {
-               userIdField.setText("User already exists. Enter another ID.");
-            } else if (userIdField.getText().isEmpty())  {
-                userIdField.setText("Enter a user ID.");
+            if (userDatabase.containsKey(userIdField.getText()) || userIdField.getText().isEmpty()) {
+               userIdField.setText("Enter a valid user ID.");
             } else {
+                //Create User and put them in the userDatabase and add them to the JTRee
                 User user = new User();
                 user.setUserID(userIdField.getText());
                 userDatabase.put(userIdField.getText(), user);
                 user.addToTree();
 
-                //Initialize EntryVisitor and have user call its accept() method
+                //Initialize EntryVisitor and have user call its accept() method for that visitor
                 EntryVisitor countEntries = new CountEntryVisitor();
                 user.accept(countEntries);
-                int userCount = AdminControlPanel.getInstance().getUserCount();
-                userCount++;
-                AdminControlPanel.getInstance().setGroupCount(userCount);
             }
+            System.out.println(userDatabase.toString());
         }
 
         //Add group
         if (e.getSource() == addGroupButton) {
             //Check if groupID already exists
-            if (groupDatabase.containsKey(groupIdField.getText())) {
-                groupIdField.setText("Group already exists. Enter another ID.");
-            } else if (groupIdField.getText().isEmpty())  {
-                groupIdField.setText("Enter a group ID.");
+            if (groupDatabase.containsKey(groupIdField.getText()) || groupIdField.getText().isEmpty()) {
+                groupIdField.setText("Enter a valid group ID.");
             } else {
+                //Create Group and put them in the groupDatabase and add them to the JTRee
                 Group group = new Group();
                 group.setGroupID(groupIdField.getText());
                 groupDatabase.put(groupIdField.getText(), group);
                 group.addToTree();
 
-                //Initialize EntryVisitor and have group call its accept() method
+                //Initialize EntryVisitor and have group call its accept() method for that visitor
                 EntryVisitor countEntries = new CountEntryVisitor();
                 group.accept(countEntries);
-                int groupCount = AdminControlPanel.getInstance().getGroupCount();
-                groupCount++;
-                AdminControlPanel.getInstance().setGroupCount(groupCount);
             }
             System.out.println(getGroupDatabase().toString());
         }
 
         //Show total users
         if (e.getSource() == showTotalUsersButton) {
+            //Get count of users and pass to popup message
             int userCount = AdminControlPanel.getInstance().getUserCount();
-            JOptionPane.showMessageDialog(null, "Total Users: " + userCount, "User Count", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Total Users: " + userCount,
+                    "User Count",
+                    JOptionPane.PLAIN_MESSAGE);
         }
 
         //Show total users
         if (e.getSource() == showTotalGroupsButton) {
             int groupCount = AdminControlPanel.getInstance().getGroupCount();
-            JOptionPane.showMessageDialog(null, "Total Users: " + groupCount, "User Count", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Total Users: " + groupCount,
+                    "User Count",
+                    JOptionPane.PLAIN_MESSAGE);
         }
 
         //Show total users
         if (e.getSource() == showTotalTweetsButton) {
             int totalTweets = UserView.getInstance().getTweetCount();
-            JOptionPane.showMessageDialog(null, "Total tweets: " + totalTweets, "User Count", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Total tweets: " + totalTweets,
+                    "User Count",
+                    JOptionPane.PLAIN_MESSAGE);
         }
 
         //Show total users
         if (e.getSource() == showPercentPositiveButton) {
             int positiveCount = UserView.getInstance().getPositiveCount();
-            JOptionPane.showMessageDialog(null, "Total positive messages: " + positiveCount, "User Count", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Total positive messages: " + positiveCount,
+                    "User Count",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 }
